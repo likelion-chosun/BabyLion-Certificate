@@ -1,8 +1,9 @@
-package com.group.openai.controller;
+package com.baby.lions.openai.controller;
 
+import com.baby.lions.openai.dto.ScheduleResponse;
+import com.baby.lions.openai.service.ChatGPTService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.group.openai.dto.ScheduleResponse;
-import com.group.openai.service.ChatGPTService;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

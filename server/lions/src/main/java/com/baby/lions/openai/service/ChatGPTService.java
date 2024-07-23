@@ -1,15 +1,11 @@
-package com.group.openai.service;
+package com.baby.lions.openai.service;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.group.openai.dto.ChatGPTRequest;
-import com.group.openai.dto.ChatGPTResponse;
-import com.group.openai.dto.ChatRecord;
-import com.group.openai.dto.ScheduleResponse;
-import com.group.openai.entity.Schedule;
-import com.group.openai.repository.ChatRecordRepository;
-import com.group.openai.repository.ScheduleRepository;
+import com.baby.lions.openai.dto.*;
+import com.baby.lions.openai.entity.Schedule;
+import com.baby.lions.openai.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

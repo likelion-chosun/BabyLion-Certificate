@@ -1,4 +1,4 @@
-package com.group.openai.dto;
+package com.baby.lions.openai.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
