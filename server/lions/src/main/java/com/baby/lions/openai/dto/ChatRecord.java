@@ -1,4 +1,5 @@
-package com.group.openai.dto;
+package com.baby.lions.openai.dto;
+
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,4 +21,3 @@ public class ChatRecord {
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String botMessage;
-}

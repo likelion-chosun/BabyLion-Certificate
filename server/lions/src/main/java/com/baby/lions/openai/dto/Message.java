@@ -1,4 +1,5 @@
-package com.group.openai.dto;
+
+package com.baby.lions.openai.dto;
 
 import lombok.*;
 

@@ -26,3 +26,4 @@ public class ChatGPTConfig {
         return restTemplate;
     }
 }
+

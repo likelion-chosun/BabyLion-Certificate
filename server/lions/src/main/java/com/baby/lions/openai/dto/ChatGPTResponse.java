@@ -1,4 +1,4 @@
-package com.group.openai.dto;
+package com.baby.lions.openai.dto;
 
 import lombok.*;
 
@@ -20,3 +20,4 @@ public class ChatGPTResponse {
         private Message message;
     }
 }
+

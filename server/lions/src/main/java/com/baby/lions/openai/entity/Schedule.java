@@ -1,4 +1,4 @@
-package com.group.openai.entity;
+package com.baby.lions.openai.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,4 +18,3 @@ public class Schedule {
         this.title = title;
         this.description = description;
     }
-}
