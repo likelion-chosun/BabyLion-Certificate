@@ -21,4 +21,3 @@ public class ChatRecord {
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String botMessage;
-}

@@ -18,4 +18,3 @@ public class Schedule {
         this.title = title;
         this.description = description;
     }
-}

@@ -1,4 +1,4 @@
-package com.baby.lions.openai.config;
+package com.group.openai.config;
 
 
 import org.springframework.beans.factory.annotation.Value;
@@ -26,3 +26,4 @@ public class ChatGPTConfig {
         return restTemplate;
     }
 }
+

@@ -20,3 +20,4 @@ public class ChatGPTResponse {
         private Message message;
     }
 }
+
