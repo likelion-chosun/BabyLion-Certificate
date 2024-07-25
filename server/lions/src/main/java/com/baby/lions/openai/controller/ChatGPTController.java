@@ -37,15 +37,4 @@ public class ChatGPTController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing chat request");
 		}
 	}
-
-	@GetMapping("/schedule")
-	public ResponseEntity<List<ScheduleResponse>> getSchedule(@RequestParam("mood") String mood) {
-		try {
-			List<ScheduleResponse> schedules = scheduleService.getScheduleRecommendations(mood);
-			return ResponseEntity.ok(schedules);
-		} catch (Exception e) {
-			log.error("일정 추천 중 오류가 발생: ", e);
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-		}
-	}
 }

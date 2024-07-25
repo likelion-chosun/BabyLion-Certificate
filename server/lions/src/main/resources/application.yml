@@ -25,14 +25,14 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: toor
-    jpa:
-      database-platform: org.hibernate.dialect.MySQLDialect
-      hibernate:
-        ddl-auto: update
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: create-drop
 
 openai:
   model: gpt-3.5-turbo
   api:
-    key: secret-key
+    key: sk-proj-ZNXf3J8w75tcKablJVuNT3BlbkFJ9aMorwD8DnNhQgswsMj1
   url:
     prompt: https://api.openai.com/v1/chat/completions
