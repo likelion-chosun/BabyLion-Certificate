@@ -26,11 +26,6 @@ public class ScheduleService {
         scheduleRepository.saveAll(schedules);
     }
 
-    public List<ScheduleResponse> getScheduleRecommendations(String mood) {
-        List<Schedule> schedules = generateSchedules(mood);
-        return convertToScheduleResponses(schedules);
-    }
-
     public List<Schedule> parseSchedules(String responseContent) throws JsonProcessingException {
         List<Map<String, String>> scheduleMaps = objectMapper.readValue(responseContent, List.class);
         List<Schedule> schedules = new ArrayList<>();
@@ -44,13 +39,4 @@ public class ScheduleService {
         return schedules;
     }
 
-    public List<ScheduleResponse> convertToScheduleResponses(List<Schedule> schedules) {
-        return schedules.stream()
-                .map(schedule -> new ScheduleResponse(schedule.getTitle(), schedule.getDescription()))
-                .collect(Collectors.toList());
-    }
-
-    public List<Schedule> generateSchedules(String userInput) {
-        return Collections.emptyList();
-    }
 }
