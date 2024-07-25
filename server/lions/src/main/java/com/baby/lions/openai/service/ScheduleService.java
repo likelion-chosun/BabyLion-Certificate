@@ -4,16 +4,12 @@ import com.baby.lions.openai.entity.Schedule;
 import com.baby.lions.openai.repository.ScheduleRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.baby.lions.openai.dto.ScheduleResponse;
-
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
