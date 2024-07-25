@@ -1,5 +1,4 @@
-package com.group.openai.config;
-
+package com.baby.lions.openai.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +8,6 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class ChatGPTConfig {
-
 
     @Value("${openai.api.key}")
     private String openAiKey;
