@@ -24,7 +24,6 @@ public class ChatGPTService {
     private final ChatRecordService chatRecordService;
     private final ScheduleService scheduleService;
     private final ObjectMapper objectMapper;
-    private final ChatRecordRepository chatRecordRepository;
 
     public String createSchedules(String prompt) throws JsonProcessingException {
         String input;
