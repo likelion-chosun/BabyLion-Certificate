@@ -38,4 +38,8 @@ public class ScheduleService {
         return scheduleRepository.findAll();
     }
 
+    public void resetSchedules(){
+        scheduleRepository.deleteAll();
+    }
+
 }

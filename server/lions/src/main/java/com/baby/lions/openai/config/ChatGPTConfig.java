@@ -1,4 +1,4 @@
-package com.group.openai.config;
+package com.baby.lions.openai.config;
 
 
 import org.springframework.beans.factory.annotation.Value;

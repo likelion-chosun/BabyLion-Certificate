@@ -4,6 +4,7 @@ package com.baby.lions.openai.service;
 import com.baby.lions.openai.dto.ChatGPTRequest;
 import com.baby.lions.openai.dto.ChatGPTResponse;
 import com.baby.lions.openai.entity.Schedule;
+import com.baby.lions.openai.repository.ChatRecordRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class ChatGPTService {
     private final ChatRecordService chatRecordService;
     private final ScheduleService scheduleService;
     private final ObjectMapper objectMapper;
+    private final ChatRecordRepository chatRecordRepository;
 
     public String createSchedules(String prompt) throws JsonProcessingException {
         String input;
@@ -51,6 +53,10 @@ public class ChatGPTService {
                 "  {\"title\": \"카페 가기\", \"description\": \"음료 한잔 어떠신가요\"}\n" +
                 "]\n" +
                 "입력: " + input;
+
+        chatRecordService.resetRecord();
+        scheduleService.resetSchedules();
+
 
         ChatGPTRequest request = new ChatGPTRequest("gpt-3.5-turbo", basePrompt, 1, 256, 1, 0, 0);
         ChatGPTResponse response = gptCommuteService.getChatGPTResponse(request);
