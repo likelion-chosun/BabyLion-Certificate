@@ -18,4 +18,8 @@ public class ChatRecordService {
                 .build();
         chatRecordRepository.save(chatRecord);
     }
+
+    public void resetRecord(){
+        chatRecordRepository.deleteAll();
+    }
 }

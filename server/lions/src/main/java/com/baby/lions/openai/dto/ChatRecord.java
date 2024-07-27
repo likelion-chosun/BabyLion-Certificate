@@ -11,13 +11,14 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class ChatRecord {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 
-	@Column(nullable = false)
-	private String userMessage;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(columnDefinition = "TEXT", nullable = false)
-	private String botMessage;
+    @Column(nullable = false)
+    private String userMessage;
+
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String botMessage;
 }
