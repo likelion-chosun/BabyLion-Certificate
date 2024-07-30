@@ -1,0 +1,144 @@
+
+.App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  width: 200px;
+  margin-top: 200px;
+  margin-bottom: 200px;
+  margin-left: 100px;
+  background-color: #f0f0f0;
+}
+
+.login-container {
+  background-color: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 400px;
+}
+
+.login-container h1 {
+  margin-bottom: 30px;
+}
+
+.email, .password {
+  margin-bottom: 20px;
+  width: full;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.email label, .password label {
+  display: flex;
+  margin-bottom: 8px;
+  justify-content: flex-start; 
+  height:20px;
+  width: 100%;
+  text-align: center;
+  margin-left: 52px;
+}
+
+/* 부모 요소를 중앙 정렬하기 */
+.container {
+  display: flex;
+  flex-direction: column; /* 수직 정렬 */
+  align-items: center;    /* 수평 중앙 정렬 */
+  justify-content: center; /* 수직 중앙 정렬 (전체 높이로 중앙 배치) */
+  height: 50px;          /* 전체 화면 높이 */
+  width: 50px;
+  text-align: right;
+}
+
+.email input, .password input {
+  width: 220px;
+  height: 25px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;    /* 입력 필드 사이에 간격 추가 */
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.login-button {
+  background-color: black;
+  color: white;
+  font-size: large;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 20px;
+  margin-top: 3px; 
+  cursor: pointer;
+  width: 250px;
+  align-items: center;
+  font-weight: bold;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+.additional-options {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.additional-options span {
+  margin: 50px;
+  margin-right:22px;
+  margin-left:10px;
+}
+
+.signup-button {
+  background-color: white;
+  color: black;
+  font-size: large;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-top: 10px;
+  cursor: pointer;
+  width: 222px;
+}
+
+#button_area {
+  background-color: rgb(222, 233, 238);
+  border-radius: 10px;
+  padding: 10px;
+  width: 95%;
+  display: flex;
+  justify-content: center;
+}
+
+/* .NaverLoginBtn{
+  display: flex;
+	align-items: center;
+	width: 360px;
+	height: 56px;
+	background-color: #03c75a;
+	border-radius: 6px;
+} */
+
+/* .NaverIcon{
+  width: 30px;
+	height: 30px;
+	margin-left: 10px;
+	background: url('https://nid.naver.com/oauth2.0/authorize?client_id=0&redirect_uri=https%3A%2F%2Ftest.codemshop.com%2Fmsm_naver&response_type=code&scope=profile&state=2DC7CC18') no-repeat center;
+	background-size: 30px;
+} */
+
+/* .NaverLoginTitle{
+  margin-left: 90px;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 24px;
+} */
+
+.naverIdLogin{
+  display: none;
+}
