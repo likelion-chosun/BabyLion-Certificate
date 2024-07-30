@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +24,16 @@ public class ChatGPTService {
     private final ChatRecordService chatRecordService;
     private final ScheduleService scheduleService;
     private final ObjectMapper objectMapper;
+    private final JdbcTemplate jdbcTemplate;
+
+    //DB 지정 필요
+    public void resetRepositories() {
+        jdbcTemplate.execute("TRUNCATE TABLE schedule");
+        jdbcTemplate.execute("TRUNCATE TABLE chat_record");
+    }
 
     public String createSchedules(String prompt) throws JsonProcessingException {
+        resetRepositories();
         String input;
         try {
             Map<String, String> promptMap = objectMapper.readValue(prompt, Map.class);
@@ -52,8 +61,6 @@ public class ChatGPTService {
                 "]\n" +
                 "입력: " + input;
 
-        chatRecordService.resetRecord();
-        scheduleService.resetSchedules();
 
 
         ChatGPTRequest request = new ChatGPTRequest("gpt-3.5-turbo", basePrompt, 1, 256, 1, 0, 0);
