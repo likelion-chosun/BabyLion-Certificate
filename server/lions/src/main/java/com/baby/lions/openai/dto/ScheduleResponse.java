@@ -8,4 +8,6 @@ import lombok.*;
 public class ScheduleResponse {
     private String title;
     private String description;
+
+
 }
