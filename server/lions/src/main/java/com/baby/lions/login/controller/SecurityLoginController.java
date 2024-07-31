@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 
 @RestController
@@ -21,10 +22,10 @@ public class SecurityLoginController {
     private final UserService userService;
 
     @GetMapping(value = {"", "/"})
-    public String home(Model model, Authentication auth) {
+    public ModelAndView home(Model model, Authentication auth) {
         model.addAttribute("loginType", "security-login");
         model.addAttribute("pageName", "Security 로그인");
-
+        ModelAndView modelAndView = new ModelAndView("home");
         if(auth != null) {
             User loginUser = userService.getLoginUserByLoginId(auth.getName());
             if (loginUser != null) {
@@ -32,23 +33,23 @@ public class SecurityLoginController {
             }
         }
 
-        return "home";
+        return modelAndView;
     }
 
     @GetMapping("/join")
-    public String joinPage(Model model) {
+    public ModelAndView joinPage(Model model) {
         model.addAttribute("loginType", "security-login");
         model.addAttribute("pageName", "Security 로그인");
 
         model.addAttribute("joinRequest", new JoinRequest());
-        return "join";
+        return new ModelAndView("join");
     }
 
     @PostMapping("/join")
-    public String join(@Valid @RequestBody JoinRequest joinRequest, BindingResult bindingResult, Model model) {
+    public ModelAndView join(@Valid @RequestBody JoinRequest joinRequest, BindingResult bindingResult, Model model) {
         model.addAttribute("loginType", "security-login");
         model.addAttribute("pageName", "Security 로그인");
-
+        model.addAttribute("joinRequest",joinRequest);
         // loginId 중복 체크
         if(userService.checkLoginIdDuplicate(joinRequest.getLoginId())) {
             bindingResult.addError(new FieldError("joinRequest", "loginId", "로그인 아이디가 중복됩니다."));
@@ -61,45 +62,45 @@ public class SecurityLoginController {
         if(!joinRequest.getPassword().equals(joinRequest.getPasswordCheck())) {
             bindingResult.addError(new FieldError("joinRequest", "passwordCheck", "바밀번호가 일치하지 않습니다."));
         }
-
+        ModelAndView mav = new ModelAndView();
         if(bindingResult.hasErrors()) {
-            return "join";
+            mav.setViewName("join");
+            return mav;
         }
 
         userService.join2(joinRequest);
-
-        return "redirect:/security-login";
+        mav.setViewName("redirect:/security-login/");
+        return mav;
     }
 
     @GetMapping("/login")
-    public String loginPage(Model model) {
+    public ModelAndView loginPage(Model model) {
         model.addAttribute("loginType", "security-login");
         model.addAttribute("pageName", "Security 로그인");
 
         model.addAttribute("loginRequest", new LoginRequest());
-        return "login";
+        return new ModelAndView("login");
     }
 
     @GetMapping("/info")
-    public String userInfo(Model model, Authentication auth) {
+    public ModelAndView userInfo(Model model, Authentication auth) {
         model.addAttribute("loginType", "security-login");
         model.addAttribute("pageName", "Security 로그인");
 
         User loginUser = userService.getLoginUserByLoginId(auth.getName());
 
         if(loginUser == null) {
-            return "redirect:/security-login/login";
+            return new ModelAndView("redirect:/security-login/login");
         }
 
         model.addAttribute("user", loginUser);
-        return "info";
+        return new ModelAndView("info");
     }
 
     @GetMapping("/admin")
-    public String adminPage( Model model) {
+    public ModelAndView adminPage( Model model) {
         model.addAttribute("loginType", "security-login");
         model.addAttribute("pageName", "Security 로그인");
-
-        return "admin";
+        return new ModelAndView("admin");
     }
 }
