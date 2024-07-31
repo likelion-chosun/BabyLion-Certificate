@@ -1,21 +1,21 @@
 import styled from "styled-components";
 import { Plus } from 'lucide-react';
-import Item from './Item.jsx';
+import Item from '../component/Item.jsx';
 import { ChevronLeft } from 'lucide-react';
 import { Routes, Link, Route } from 'react-router-dom';
 
-function Recommend(){
-    return(
+function Recommend() {
+    return (
         <Container>
             <Schedule>
-            <Link style={{width:'fit-content'}} to='/'><ChevronLeft /></Link>
-            <Item name='운동 하기' desc='오늘은 미세먼지가 적어요' c='#FFAAAA' />
-            <Item name='피크닉 가기' desc='오늘은 날씨가 맑아요' c='#BAFF99' />
-            <Item name='영화 감상하기' desc='영화 감상은 어떠신가요' c='#C4EDFF' />
-            <Item name='카페 가기' desc='음료 한잔 어떠신가요' c='#F8FFA4' />
+                <Link style={{ width: 'fit-content' }} to='/'><ChevronLeft /></Link>
+                <Item name='운동 하기' desc='오늘은 미세먼지가 적어요' c='#FFAAAA' />
+                <Item name='피크닉 가기' desc='오늘은 날씨가 맑아요' c='#BAFF99' />
+                <Item name='영화 감상하기' desc='영화 감상은 어떠신가요' c='#C4EDFF' />
+                <Item name='카페 가기' desc='음료 한잔 어떠신가요' c='#F8FFA4' />
             </Schedule>
-            
-            <Submit>일정 추가하기</Submit>
+
+            <Link onClick={()=>{}} to='/Schedule'><Submit>일정 추가하기</Submit></Link>
         </Container>
     )
 }
@@ -42,6 +42,7 @@ const Schedule = styled.div`
 `
 
 const Submit = styled.button`
+    width: 100%;
     height: 50px;
     font-size: 17px;
     border: none;
