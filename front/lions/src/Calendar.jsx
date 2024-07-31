@@ -1,9 +1,8 @@
-import logo from './logo.svg';
 import './App.css';
 import React, { useState } from 'react'
-import Circle from './Circle';
+import Circle from './Circle.jsx';
 
-function App() {
+function Calendar() {
   const [timer, setTimer] = useState("00:00:00");
 
   const currentTimer = () => {
@@ -24,12 +23,12 @@ function App() {
     <>
       <h1 className='h1'
       >{timer}</h1>
-      <hr style={{marginTop: "100px"}}/> 
+      <hr style={{marginTop: "100px"}}/>
 
       <Circle></Circle>
-      
+
     </>
   )
 }
 
-export default App;
+export default Calendar;
