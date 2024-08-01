@@ -5,8 +5,14 @@ import { useState } from 'react';
 
 function InputPage() {
 
-  const [arr, setarr] = useState(['비오는', '행복한', '우울한', '맑은', '쉬고싶은', '지루한', '에너지 넘치는', '😍', '😭']);
-
+  const [Words, setWords] = useState(['비오는', '행복한', '우울한', '맑은', '쉬고싶은', '지루한', '에너지 넘치는', '😍', '😭']);
+  const [Toggle, setToggle] = useState(Array(9).fill(false));
+  const res = []
+  function makeres(){
+    for(let i=0; i<Toggle.length; i++ )
+      if(Toggle[i]) res.push(Words[i]);
+    console.log(res)
+  }
 
   return (
     <Container>
@@ -15,12 +21,13 @@ function InputPage() {
         <Title>어떤</Title>
         <Title>하루인가요?</Title>
         <TagBox>
-          {arr.map((adj, index) => (<Tag key={index}>{adj}</Tag>))}
+          {Words.map((word, index) => (<Tag key={index} i={index} Toggle={Toggle} setToggle={setToggle} >{word}</Tag>))}
         </TagBox>
         <Input placeholder='직접 입력'></Input>
       </div>
 
-      <Link onClick={() => { }} to='/Recommend'><Submit>일정 추천받기</Submit></Link>
+      <Link onClick={()=>{ makeres(); }} to='/Recommend'><Submit>일정 추천받기</Submit></Link>
+      {/* 위에 Link로 감싸기 */}
     </Container>
   )
 }

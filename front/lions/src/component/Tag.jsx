@@ -2,17 +2,25 @@ import { useState } from "react";
 import styled from "styled-components";
 
 
-function Tag({children}){
+function Tag(props){
 
-  const [Added,setAdded] = useState(false);
+  const [isAdd,setisAdd] = useState(false);
+  function toggle(){
+    setisAdd(!isAdd);
+    const tmp = props.Toggle;
+    tmp[props.i] = !tmp[props.i];
+    props.setToggle(tmp);
+    
+    console.log(props.Toggle);
+  }
 
     return(
-        <Item added={Added} onClick={()=>{setAdded(!Added);}} >{children}</Item>
+        <Item isAdd={isAdd} onClick={toggle} >{props.children}</Item>
     )
 }
 const Item = styled.button`
   width: fit-content;
-  background-color: ${props => props.added ? '#F4F4F5' : '#ffffff'};
+  background-color: ${props => props.isAdd ? '#efefef' : '#ffffff'};
   color: #8d939c;
   border-radius: 15px;
   border: solid 1px #E6E6E6;
