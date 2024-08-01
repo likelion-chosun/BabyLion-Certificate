@@ -11,7 +11,14 @@ function InputPage() {
   function makeres(){
     for(let i=0; i<Toggle.length; i++ )
       if(Toggle[i]) res.push(Words[i]);
-    console.log(res)
+    res.push(Direct);
+    console.log(res) //확인용 출력
+  }
+
+  const [Direct,setDirect] = useState('');
+  function onChange(event){//항상 직접입력 인풋 -> Direct에 넣어주는함수
+    // console.log(event.target.value); //확인용 출력
+    setDirect(event.target.value);
   }
 
   return (
@@ -23,11 +30,11 @@ function InputPage() {
         <TagBox>
           {Words.map((word, index) => (<Tag key={index} i={index} Toggle={Toggle} setToggle={setToggle} >{word}</Tag>))}
         </TagBox>
-        <Input placeholder='직접 입력'></Input>
+        <Input onChange={onChange} placeholder='직접 입력'></Input>
       </div>
 
       <Link onClick={()=>{ makeres(); }} to='/Recommend'><Submit>일정 추천받기</Submit></Link>
-      {/* 위에 Link로 감싸기 */}
+      {/* 실사용때 위에는 Link태그로 감싸져야함 */}
     </Container>
   )
 }

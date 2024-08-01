@@ -10,8 +10,8 @@ function Tag(props){
     const tmp = props.Toggle;
     tmp[props.i] = !tmp[props.i];
     props.setToggle(tmp);
-    
-    console.log(props.Toggle);
+
+    // console.log(props.Toggle); //디버깅용 출력
   }
 
     return(
