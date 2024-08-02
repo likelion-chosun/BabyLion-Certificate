@@ -12,8 +12,4 @@ public interface ChatRecordRepository extends JpaRepository<ChatRecord, Long> {
 
 
 
-//    @Modifying
-//    @Transactional
-//    @Query("delete from ChatRecord r")
-//    void deleteAllWithQuery();
 }

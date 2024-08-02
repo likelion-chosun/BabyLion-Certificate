@@ -31,10 +31,10 @@ public class ChatGPTController {
 			return ResponseEntity.ok(responseContent);
 		} catch (JsonProcessingException e) {
 			log.error("JSON 처리 오류: ", e);
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid JSON format");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("잘못된 JSON 요청입니다.");
 		} catch (Exception e) {
 			log.error("채팅 요청 처리 중 오류가 발생: ", e);
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing chat request");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("채팅 처리중 오류가 발생했습니다.");
 		}
 	}
 }
