@@ -17,9 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -73,7 +71,8 @@ public class CalendarService {
         for (EventRequest eventRequest : request.getEvents()) {
             Long scheduleId = eventRequest.getScheduleId();
             LocalTime startTime = LocalTime.parse(eventRequest.getStartTime());
-            LocalTime endTime = LocalTime.parse(eventRequest.getEndTime());
+
+            LocalTime endTime = eventRequest.getEndTime().isEmpty() ? null : LocalTime.parse(eventRequest.getEndTime());
 
             String title = schedules.stream()
                     .filter(schedule -> schedule.getId().equals(scheduleId))
@@ -101,25 +100,38 @@ public class CalendarService {
         return responseList;
     }
 
-    @Transactional
-    public List<CalendarResponse> getEventByDate(String date) {
-        LocalDate localDate = LocalDate.parse(date);
+    @Transactional(readOnly = true)
+    public List<CalendarDayResponse> getAllEvents() {
+        List<Calendar> events = calendarRepository.findAll();
 
-        List<Calendar> events = calendarRepository.findByDate(localDate);
-        List<CalendarResponse> responseList = new ArrayList<>();
+        // 날짜를 기준으로 정렬하여 그룹화
+        Map<LocalDate, List<Calendar>> eventsByDate = events.stream()
+                .sorted(Comparator.comparing(Calendar::getDate)) // 날짜 기준으로 정렬
+                .collect(Collectors.groupingBy(Calendar::getDate, LinkedHashMap::new, Collectors.toList()));
 
-        for (Calendar event : events) {
-            CalendarResponse response = new CalendarResponse(
-                    event.getTitle(),
-                    event.getDate().toString(),
-                    event.getStartTime().toString(),
-                    event.getEndTime().toString()
-            );
-            responseList.add(response);
+        List<CalendarDayResponse> calendarDayResponses = new ArrayList<>();
+
+        for (Map.Entry<LocalDate, List<Calendar>> entry : eventsByDate.entrySet()) {
+            LocalDate date = entry.getKey();
+            List<Calendar> dayEvents = entry.getValue();
+
+            List<CalendarResponse> scheduleResponses = dayEvents.stream()
+                    .map(event -> new CalendarResponse(
+                            event.getTitle(),
+                            event.getStartTime().toString(),
+                            event.getEndTime().toString()))
+                    .collect(Collectors.toList());
+
+            String weekday = date.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
+            CalendarDayResponse dayResponse = new CalendarDayResponse(
+                    date.toString(), weekday, scheduleResponses);
+
+            calendarDayResponses.add(dayResponse);
         }
 
-        return responseList;
+        return calendarDayResponses;
     }
+
 
     @Transactional
     public CalendarDayResponse getEventsByDate(String date) {
@@ -134,6 +146,7 @@ public class CalendarService {
         List<CalendarResponse> scheduleResponses = filteredEvents.stream()
                 .map(event -> new CalendarResponse(
                         event.getTitle(),
+                        event.getDate().toString(),
                         event.getStartTime().toString(),
                         event.getEndTime().toString()))
                 .collect(Collectors.toList());
@@ -144,37 +157,30 @@ public class CalendarService {
     }
 
     @Transactional
-    public CalendarResponse updateEvent(Long eventId, CalendarRequest updateRequest) {
+    public CalendarResponse updateEvent(CalendarRequest updateRequest) {
+        Long eventId = updateRequest.getId();
+        Optional<Calendar> optionalEvent = calendarRepository.findById(eventId);
 
-        Calendar event = calendarRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("일정을 찾을 수 없습니다."));
-
-        if (updateRequest.getTitle() != null) {
-            event.setTitle(updateRequest.getTitle());
-        }
-        if (updateRequest.getDate() != null) {
-            LocalDate date = convertToLocalDate(updateRequest.getDate());
-            event.setDate(date);
-        }
-        if (updateRequest.getStartTime() != null) {
-            LocalTime startTime = convertToLocalTime(updateRequest.getStartTime());
-            event.setStartTime(startTime);
-        }
-        if (updateRequest.getEndTime() != null) {
-            LocalTime endTime = convertToLocalTime(updateRequest.getEndTime());
-            event.setEndTime(endTime);
+        if (!optionalEvent.isPresent()) {
+            throw new RuntimeException("일정을 찾을 수 없습니다.");
         }
 
+        Calendar event = optionalEvent.get();
+        event.setTitle(updateRequest.getTitle());
+        event.setDate(LocalDate.parse(updateRequest.getDate()));
+        event.setStartTime(LocalTime.parse(updateRequest.getStartTime()));
+        event.setEndTime(LocalTime.parse(updateRequest.getEndTime()));
 
-        calendarRepository.save(event);
+        Calendar updatedEvent = calendarRepository.save(event);
 
-        return new CalendarResponse(event.getTitle(), event.getDate().toString(),event.getStartTime().toString(), event.getEndTime().toString());
+        return new CalendarResponse(updatedEvent.getTitle(), updatedEvent.getDate().toString(), updatedEvent.getStartTime().toString(), updatedEvent.getEndTime().toString());
     }
 
-
     @Transactional
-    public void deleteEvent(Long eventId) {
-        if(!calendarRepository.existsById(eventId)){
+    public void deleteEvent(CalendarRequest deleteRequest) {
+        Long eventId = deleteRequest.getId();
+
+        if (!calendarRepository.existsById(eventId)) {
             throw new RuntimeException("일정을 찾을 수 없습니다.");
         }
         calendarRepository.deleteById(eventId);

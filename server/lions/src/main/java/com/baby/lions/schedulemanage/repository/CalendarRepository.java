@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface CalendarRepository extends JpaRepository<Calendar,Long> {
     List<Calendar> findByDate(LocalDate date);
+
+    List<Calendar> findByTitleAndDate(String title, LocalDate date);
 }

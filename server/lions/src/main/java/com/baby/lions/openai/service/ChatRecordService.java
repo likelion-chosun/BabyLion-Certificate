@@ -19,7 +19,5 @@ public class ChatRecordService {
         chatRecordRepository.save(chatRecord);
     }
 
-//    public void resetRecord(){
-//        chatRecordRepository.deleteAllWithQuery();
-//    }
+
 }
