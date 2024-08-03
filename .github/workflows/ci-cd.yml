@@ -66,16 +66,17 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
+          envs: |
+            KAKAO_ID: ${{ secrets.KAKAO_ID }}
+            KAKAO_SECRET_ID: ${{ secrets.KAKAO_SECRET_ID }}
+            LOGIN_REDIRECT_URI: ${{ secrets.LOGIN_REDIRECT_URI }}
+            NAVER_ID: ${{ secrets.NAVER_ID }}
+            NAVER_SECRET_ID: ${{ secrets.NAVER_SECRET_ID }}
+            NAVER_REDIRECT_URI: ${{ secrets.NAVER_REDIRECT_URI }}
+            OPEN_AI_KEY: ${{ secrets.OPEN_AI_KEY }}
           script: |
             docker rm -f $(docker ps -qa)
             docker pull ${{ secrets.DOCKER_REPO }}/simple-spring-boot-app:1.0
             docker run -d --name simple-spring-boot-app -p 8080:8080 ${{ secrets.DOCKER_REPO }}/simple-spring-boot-app:1.0
             docker image prune -f
-        env:
-          KAKAO_ID: ${{ secrets.KAKAO_ID }}
-          KAKAO_SECRET_ID: ${{ secrets.KAKAO_SECRET_ID }}
-          LOGIN_REDIRECT_URI: ${{ secrets.LOGIN_REDIRECT_URI }}
-          NAVER_ID: ${{ secrets.NAVER_ID }}
-          NAVER_SECRET_ID: ${{ secrets.NAVER_SECRET_ID }}
-          NAVER_REDIRECT_URI: ${{ secrets.NAVER_REDIRECT_URI }}
-          OPEN_AI_KEY: ${{ secrets.OPEN_AI_KEY }}
+
