@@ -10,11 +10,9 @@ import Modal from "../component/modal";
 
 export default function ScheduleList() {
 
-  const [value, onChange] = useState(new Date());
-  const [isOpen, setisOpen] = useState(false);
-  const newlist = [
+  const tmpList = [
     {
-      day: "2024-07-31",
+      day: "2024-08-31",
       weekday: "월요일",
       schedules: [
         {
@@ -40,16 +38,16 @@ export default function ScheduleList() {
       ]
     },
     {
-      day: "2024-07-11",
+      day: "2024-08-01",
       weekday: "목요일",
       schedules: [
         {
-          title: "11일 일정입니다!",
+          title: "일정입니다!",
           startTime: "09:00",
           endTime: "10:00"
         },
         {
-          title: "11일에 밥약",
+          title: "밥약",
           startTime: "11:00",
           endTime: "12:00"
         },
@@ -75,6 +73,9 @@ export default function ScheduleList() {
       ]
     }
   ]
+  const [value, onChange] = useState(new Date());
+  const [isOpen, setisOpen] = useState(false);
+  const [List,setList] = useState(tmpList);
 
   return (
     <Container>
@@ -93,7 +94,7 @@ export default function ScheduleList() {
 
         tileContent={({ date, view }) => {
           const html = [];
-          if (newlist.find((x) => x.day === moment(date).format('YYYY-MM-DD'))) {
+          if (List.find((x) => x.day === moment(date).format('YYYY-MM-DD'))) {
             html.push(<Dot></Dot>);
           }
           return (
@@ -111,9 +112,9 @@ export default function ScheduleList() {
         </Top>
 
         <Box>
-        {/* newlist의 day들에 대해 선택한날짜랑 같다면 -> 선택한날짜의schedules mapping  */}
-        {newlist.find((obj) => obj.day === moment(value).format('YYYY-MM-DD'))
-          ? newlist.find((obj) => obj.day === moment(value).format('YYYY-MM-DD'))
+        {/* List의 day들에 대해 선택한날짜랑 같다면 -> 선택한날짜의schedules mapping  */}
+        {List.find((obj) => obj.day === moment(value).format('YYYY-MM-DD'))
+          ? List.find((obj) => obj.day === moment(value).format('YYYY-MM-DD'))
             .schedules.map((s, index) => (
               <Schedule>
                 {s.title}<Time><div>{s.startTime}</div>{s.endTime}</Time>
@@ -125,7 +126,7 @@ export default function ScheduleList() {
       </View>
 
       
-      {isOpen?<Modal setisOpen={setisOpen} />:null}
+      {isOpen?<Modal setisOpen={setisOpen} List={List} setList={setList}  />:null}
     </Container>
   )
 }

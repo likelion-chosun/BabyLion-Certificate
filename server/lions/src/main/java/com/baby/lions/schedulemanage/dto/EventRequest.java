@@ -8,4 +8,5 @@ public class EventRequest {
     private String date;
     private String startTime;
     private String endTime;
+
 }

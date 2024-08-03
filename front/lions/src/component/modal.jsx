@@ -1,19 +1,31 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { X } from 'lucide-react'
+import moment from "moment";
 
-export default function Modal(props){
+export default function Modal(props) {
 
-    const [value, onChange] = useState('10:00');
+    function onChange(event) {
+        // 매개변수 'event'는 이벤트가 발생한 태그의 정보를 가져온다.
+        setname(event.target.value)
+        console.log(event.target.value);
+        // 값이 바뀔때마다 setname으로 name값을 변경해준다.
+    }
+    function append() {
+        //서버에게 "날짜" , {일정 객체} 주면서 추가해달라고 요청
+        // props.setList(...props.List.schdules,
+        //     props.List.find((obj) => obj.day === moment(value).format('YYYY-MM-DD')).schdules);
+        props.setisOpen(false);
+    }
+    const [name, setname] = useState('');
 
-    return(
-        <Container onClick={()=>props.setisOpen()}>
-            <Contents>
-                <div>
-                <Top><h2>일정 추가</h2> <X onClick={()=>props.setisOpen()} strokeWidth='1.6' /></Top>
-                <Input placeholder="제목" />
-                </div>
-                <Submit onClick={()=>{}}><p>추가하기</p></Submit>
+    return (
+        <Container onClick={() => props.setisOpen(false)}>
+            <Contents onClick={(event) => event.stopPropagation()}>
+
+                <Top><h2>일정 추가</h2> <X onClick={() => props.setisOpen(false)} strokeWidth='1.6' /></Top>
+                <Input type='text' onChange={onChange} placeholder="제목" />
+                <Submit onClick={append}><p>추가하기</p></Submit>
             </Contents>
         </Container>
     )
@@ -56,7 +68,6 @@ const Input = styled.input`
     width: 80%;
     height: 30px;
     font-size: 20px;
-    margin-top: 20px;
 `
 
 const Submit = styled.button`
