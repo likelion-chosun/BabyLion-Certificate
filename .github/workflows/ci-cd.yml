@@ -66,6 +66,7 @@ jobs:
             NAVER_SECRET_ID: ${{ secrets.NAVER_SECRET_ID }}
             NAVER_REDIRECT_URI: ${{ secrets.NAVER_REDIRECT_URI }}
             OPEN_AI_KEY: ${{ secrets.OPEN_AI_KEY }}
+            HOST: ${{ secrets.HOST }}
           script: |
             docker rm -f $(docker ps -qa)
             docker pull ${{ secrets.DOCKER_REPO }}/simple-spring-boot-app:1.0
