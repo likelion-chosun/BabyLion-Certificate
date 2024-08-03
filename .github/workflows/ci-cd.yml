@@ -78,7 +78,7 @@ jobs:
           OPEN_AI_KEY: ${{ secrets.OPEN_AI_KEY }}
 
       - name: Deploy to Prod
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v1.0.3
         id: deploy-prod
         with:
           host: ${{ secrets.EC2_HOST }}
