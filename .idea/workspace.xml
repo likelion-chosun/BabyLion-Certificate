@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a96d1f4b-f244-4b06-a2d2-999ae3753c53" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/secrets.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/lions/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/front/lions/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/lions/.github/workflows/server.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/server.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/lions/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/server/lions/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/ci-cd.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci-cd.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,10 +64,10 @@
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Spring\BabyLion-Certificate" />
+      <recent name="C:\Spring\BabyLion-Certificate\server\lions" />
+      <recent name="C:\Spring\BabyLion-Certificate\server" />
       <recent name="C:\Spring\BabyLion-Certificate\front\lions\src\calendar" />
       <recent name="C:\Spring\BabyLion-Certificate\front\lions\public\calendar" />
-      <recent name="C:\Spring\BabyLion-Certificate\front\lions\src" />
-      <recent name="C:\Spring\BabyLion-Certificate\front\lions\node_modules" />
     </key>
   </component>
   <component name="RunManager">
