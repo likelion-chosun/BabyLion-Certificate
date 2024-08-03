@@ -52,9 +52,9 @@ jobs:
 
       - name: Docker build & push to docker repo
         run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -f Dockerfile -t ${{ secrets.DOCKER_REPO }}/goorm .
-          docker push ${{ secrets.DOCKER_REPO }}/goorm
+          sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          sudo docker build -f Dockerfile -t ${{ secrets.DOCKER_REPO }}/goorm .
+          sudo docker push ${{ secrets.DOCKER_REPO }}/goorm
         working-directory: server/lions
 
       - name: Deploy to server
@@ -64,10 +64,10 @@ jobs:
           username: ubuntu
           key: ${{ secrets.KEY }}
           script: |
-            docker rm -f $(docker ps -qa)
-            docker pull ${{ secrets.DOCKER_REPO }}/goorm
-            docker-compose up -d
-            docker image prune -f
+            sudo docker rm -f $(docker ps -qa)
+            sudo docker pull ${{ secrets.DOCKER_REPO }}/goorm
+            sudo docker-compose up -d
+            sudo docker image prune -f
         env:
           KAKAO_ID: ${{ secrets.KAKAO_ID }}
           KAKAO_SECRET_ID: ${{ secrets.KAKAO_SECRET_ID }}
