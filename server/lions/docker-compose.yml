@@ -3,6 +3,6 @@ version: '3'
 services:
   web:
     container_name: web
-    image: m1ns1k/simple-spring-boot-app
+    build: .
     ports:
       - "8080:8080"
