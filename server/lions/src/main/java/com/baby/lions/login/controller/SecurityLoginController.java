@@ -63,9 +63,9 @@ public class SecurityLoginController {
             bindingResult.addError(new FieldError("joinRequest", "passwordCheck", "바밀번호가 일치하지 않습니다."));
         }
         ModelAndView mav = new ModelAndView();
-        if(bindingResult.hasErrors()) {
-            mav.setViewName("join");
-            return mav;
+	    if (bindingResult.hasErrors()) {
+		    mav.setViewName("join");
+		    return mav;
         }
 
         userService.join2(joinRequest);
