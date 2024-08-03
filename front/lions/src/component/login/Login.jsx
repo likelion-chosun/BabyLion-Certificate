@@ -1,14 +1,9 @@
-import { useEffect, useState } from "react";
-
 import SocialKakao from "./SocialKakao";
 import SocialNaver from "./SocialNaver";
 
 import "./Login.css";
 
 export default function Login() {
-  const [getToken, setGetToken] = useState("");
-  const [userInfo, setUserInfo] = useState({});
-
   return (
     <div className="LogContainer">
       <h3>
@@ -27,8 +22,6 @@ export default function Login() {
           <SocialNaver />
         </div>
       </div>
-
-      <p></p>
     </div>
   );
 }
