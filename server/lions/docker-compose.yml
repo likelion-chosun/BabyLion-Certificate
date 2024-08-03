@@ -3,7 +3,9 @@ version: '3'
 services:
   web:
     container_name: web
-    image: simple-spring-boot-app:1.0
+    build: .
+    ports:
+      - "8080:8080"
     environment:
       - KAKAO_ID=${KAKAO_ID}
       - KAKAO_SECRET_ID=${KAKAO_SECRET_ID}
@@ -12,5 +14,11 @@ services:
       - NAVER_SECRET_ID=${NAVER_SECRET_ID}
       - NAVER_REDIRECT_URI=${NAVER_REDIRECT_URI}
       - OPEN_AI_KEY=${OPEN_AI_KEY}
-    expose:
-      - 8080
+
+  db:
+    image: mysql:15.1
+    environment:
+      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_DATABASE: test
+    ports:
+      - "3306:3306"
