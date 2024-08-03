@@ -52,9 +52,9 @@ jobs:
 
       - name: Docker build & push to docker repo
         run: |
-          sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          sudo docker build -f Dockerfile -t ${{ secrets.DOCKER_REPO }}/goorm .
-          sudo docker push ${{ secrets.DOCKER_REPO }}/goorm
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -f Dockerfile -t ${{ secrets.DOCKER_REPO }}/simple-spring-boot-app:1.0 .
+          docker push ${{ secrets.DOCKER_REPO }}/simple-spring-boot-app:1.0
         working-directory: server/lions
 
       - name: Deploy to server
@@ -64,10 +64,10 @@ jobs:
           username: ubuntu
           key: ${{ secrets.KEY }}
           script: |
-            sudo docker rm -f $(docker ps -qa)
-            sudo docker pull ${{ secrets.DOCKER_REPO }}/goorm
-            sudo docker-compose up -d
-            sudo docker image prune -f
+            docker rm -f $(docker ps -qa)
+            docker pull ${{ secrets.DOCKER_REPO }}/simple-spring-boot-app:1.0
+            docker-compose up -d
+            docker image prune -f
         env:
           KAKAO_ID: ${{ secrets.KAKAO_ID }}
           KAKAO_SECRET_ID: ${{ secrets.KAKAO_SECRET_ID }}
@@ -88,6 +88,6 @@ jobs:
           script: |
             docker stop goorm
             docker rm goorm
-            sudo docker pull ${{ secrets.DOCKER_REPO }}/goorm
-            docker run -d --name goorm -p 8080:8080 ${{ secrets.DOCKER_REPO }}/goorm
+            sudo docker pull ${{ secrets.DOCKER_REPO }}/simple-spring-boot-app:1.0
+            docker run -d --name simple-spring-boot-app -p 8080:8080 ${{ secrets.DOCKER_REPO }}/simple-spring-boot-app:1.0
             docker rmi -f $(docker images -f "dangling=true" -q)
