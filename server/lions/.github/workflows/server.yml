@@ -32,7 +32,7 @@ jobs:
 
       - name: Make properties
         run: |
-          cd ./src/main/resources
+          cd BabyLion-Certificate/server/lions/src/main/resources
           torch ./application.properties
           echo "${{ secrets.PROPERTIES }}" > ./application.properties
         shell: bash
@@ -41,17 +41,20 @@ jobs:
         run: |
           chmod +x ./gradlew
           ./gradlew clean build
+        working-directory: BabyLion-Certificate/server/lions
 
       - name: Test with Gradle
         run: |
           chmod +x ./gradlew
           ./gradlew test
+        working-directory: BabyLion-Certificate/server/lions
 
       - name: Docker build & push to docker repo
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker build -f Dockerfile -t ${{ secrets.DOCKER_REPO }}/directors-dev .
           docker push ${{ secrets.DOCKER_REPO }}/directors-dev
+        working-directory: BabyLion-Certificate/server/lions
 
       - name: Deploy to server
         uses: appleboy/ssh-action@master
