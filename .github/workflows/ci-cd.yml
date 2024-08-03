@@ -34,7 +34,7 @@ jobs:
       - name: Make properties
         run: |
           cd server/lions/src/main/resources
-          torch ./application.properties
+          touch ./application.properties
           echo "${{ secrets.PROPERTIES }}" > ./application.properties
         shell: bash
 
