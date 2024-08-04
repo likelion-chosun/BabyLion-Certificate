@@ -28,7 +28,7 @@ public class ChatGPTController {
 	public ResponseEntity<String> chat(@RequestBody @Valid String prompt) {
 		try {
 			String responseContent = chatGPTService.createSchedules(prompt);
-			log.info(responseContent);
+			log.info("info: " + responseContent);
 			return ResponseEntity.ok(responseContent);
 		} catch (JsonProcessingException e) {
 			log.error("JSON 처리 오류: ", e);
