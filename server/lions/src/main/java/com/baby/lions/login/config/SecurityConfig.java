@@ -35,7 +35,7 @@ public class SecurityConfig   {
                 .logoutUrl("/security-login")
                 .invalidateHttpSession(true).deleteCookies("JSESSIONID"));
         http.oauth2Login(kakao -> kakao
-                .defaultSuccessUrl("/spring-login")
+                .defaultSuccessUrl("/security-login")
                 .userInfoEndpoint(userInfo -> userInfo
                         .userService(principalOauth2UserService)));
 
