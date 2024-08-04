@@ -23,7 +23,7 @@ public class ScheduleController {
 
     private final ScheduleService scheduleService;
 
-    @GetMapping("/recommend")
+    @GetMapping(value = "/recommend")
     public ResponseEntity<List<Schedule>> getRecommandSchedules() {
         try {
             List<Schedule> schedules = scheduleService.getSchedules();

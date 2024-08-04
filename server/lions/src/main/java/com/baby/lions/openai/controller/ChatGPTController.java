@@ -28,7 +28,7 @@ public class ChatGPTController {
 	@Value("${openai.api.key}")
 	private String openAiKey;
 
-	@PostMapping("/chat")
+	@PostMapping(value = "/chat")
 	public ResponseEntity<String> chat(@RequestBody @Valid String prompt) {
 		try {
 			log.info("info: " + openAiKey);
