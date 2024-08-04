@@ -1,6 +1,8 @@
 package com.baby.lions.openai.controller;
 
 
+import com.baby.lions.login.util.SecurityUtils;
+import com.baby.lions.openai.dto.ScheduleResponse;
 import com.baby.lions.openai.entity.Schedule;
 import com.baby.lions.openai.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +26,13 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @GetMapping("/recommend")
-    public ResponseEntity<List<Schedule>> getRecommandSchedules() {
+    public ResponseEntity<List<ScheduleResponse>> getRecommandSchedules() {
         try {
-            List<Schedule> schedules = scheduleService.getSchedules();
+            Long userId = SecurityUtils.getCurrentUserId();
+            if (userId == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.emptyList());
+            }
+            List<ScheduleResponse> schedules = scheduleService.getSchedules(userId);
             return ResponseEntity.ok(schedules);
         } catch (NoSuchElementException e) {
             log.error("추천 스케줄을 찾을 수 없습니다: ", e);

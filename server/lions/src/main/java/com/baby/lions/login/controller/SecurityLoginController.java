@@ -7,11 +7,14 @@ import com.baby.lions.login.service.UserService;
 import jakarta.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 
 @RestController
@@ -21,34 +24,38 @@ public class SecurityLoginController {
     private final UserService userService;
 
     @GetMapping(value = {"", "/"})
-    public String home(Model model, Authentication auth) {
+    public ResponseEntity<String> home(Model model, Authentication auth) {
         model.addAttribute("loginType", "security-login");
         model.addAttribute("pageName", "Security 로그인");
-
+        ModelAndView modelAndView = new ModelAndView("home");
         if(auth != null) {
             User loginUser = userService.getLoginUserByLoginId(auth.getName());
+
             if (loginUser != null) {
-                model.addAttribute("nickname", loginUser.getNickname());
+                return ResponseEntity.ok(loginUser.getLoginId());
+            }
+            else{
+                return ResponseEntity.ok(loginUser.getProvider());
             }
         }
 
-        return "home";
+        return ResponseEntity.ok("home");
     }
 
     @GetMapping("/join")
-    public String joinPage(Model model) {
+    public ModelAndView joinPage(Model model) {
         model.addAttribute("loginType", "security-login");
         model.addAttribute("pageName", "Security 로그인");
 
         model.addAttribute("joinRequest", new JoinRequest());
-        return "join";
+        return new ModelAndView("join");
     }
 
     @PostMapping("/join")
-    public String join(@Valid @RequestBody JoinRequest joinRequest, BindingResult bindingResult, Model model) {
+    public ResponseEntity<String> join(@Valid @RequestBody JoinRequest joinRequest, BindingResult bindingResult, Model model) {
         model.addAttribute("loginType", "security-login");
         model.addAttribute("pageName", "Security 로그인");
-
+        model.addAttribute("joinRequest",joinRequest);
         // loginId 중복 체크
         if(userService.checkLoginIdDuplicate(joinRequest.getLoginId())) {
             bindingResult.addError(new FieldError("joinRequest", "loginId", "로그인 아이디가 중복됩니다."));
@@ -61,45 +68,49 @@ public class SecurityLoginController {
         if(!joinRequest.getPassword().equals(joinRequest.getPasswordCheck())) {
             bindingResult.addError(new FieldError("joinRequest", "passwordCheck", "바밀번호가 일치하지 않습니다."));
         }
-
+        ModelAndView mav = new ModelAndView();
         if(bindingResult.hasErrors()) {
-            return "join";
+            mav.setViewName("join");
+            return ResponseEntity.ok("join");
         }
 
         userService.join2(joinRequest);
-
-        return "redirect:/security-login";
+        mav.setViewName("redirect:/security-login/");
+        return ResponseEntity.ok("redirect:/security-login/");
     }
 
     @GetMapping("/login")
-    public String loginPage(Model model) {
+    public ModelAndView loginPage(Model model) {
         model.addAttribute("loginType", "security-login");
         model.addAttribute("pageName", "Security 로그인");
 
         model.addAttribute("loginRequest", new LoginRequest());
-        return "login";
-    }
+        return new ModelAndView("");
 
+    }
+    //    @GetMapping("/logout")
+//    public ResponseEntity<String> logout(){
+//
+//    }
     @GetMapping("/info")
-    public String userInfo(Model model, Authentication auth) {
+    public ResponseEntity<String> userInfo(Model model, Authentication auth) {
         model.addAttribute("loginType", "security-login");
         model.addAttribute("pageName", "Security 로그인");
 
         User loginUser = userService.getLoginUserByLoginId(auth.getName());
 
         if(loginUser == null) {
-            return "redirect:/security-login/login";
+            return ResponseEntity.ok("fail");
         }
 
         model.addAttribute("user", loginUser);
-        return "info";
+        return ResponseEntity.ok("Success login");
     }
 
     @GetMapping("/admin")
-    public String adminPage( Model model) {
+    public ModelAndView adminPage( Model model) {
         model.addAttribute("loginType", "security-login");
         model.addAttribute("pageName", "Security 로그인");
-
-        return "admin";
+        return new ModelAndView("admin");
     }
 }

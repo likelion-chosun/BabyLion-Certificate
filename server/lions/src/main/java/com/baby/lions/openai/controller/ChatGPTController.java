@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+import static com.baby.lions.login.util.SecurityUtils.getCurrentUserId;
+
 
 @Slf4j
 @RestController
@@ -27,6 +29,10 @@ public class ChatGPTController {
 	@PostMapping("/chat")
 	public ResponseEntity<String> chat(@RequestBody @Valid String prompt) {
 		try {
+			Long userId = getCurrentUserId();
+			if (userId == null) {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("사용자 인증이 필요합니다.");
+			}
 			String responseContent = chatGPTService.createSchedules(prompt);
 			return ResponseEntity.ok(responseContent);
 		} catch (JsonProcessingException e) {

@@ -1,6 +1,7 @@
-package com.baby.lions.openai.dto;
+package com.baby.lions.openai.entity;
 
 
+import com.baby.lions.login.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,4 +22,8 @@ public class ChatRecord {
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String botMessage;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

@@ -1,5 +1,6 @@
 package com.baby.lions.openai.entity;
 
+import com.baby.lions.login.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,4 +19,8 @@ public class Schedule {
         this.title = title;
         this.description = description;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

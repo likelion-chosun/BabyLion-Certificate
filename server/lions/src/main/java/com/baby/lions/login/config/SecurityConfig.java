@@ -25,12 +25,12 @@ public class SecurityConfig   {
                .requestMatchers("/security-login/admin").hasAuthority(UserRole.ADMIN.name())
                .anyRequest().permitAll()
        );
-       http.formLogin(form -> form
-               .usernameParameter("loginId")
-               .passwordParameter("password")
-               .loginPage("/security-login/login")
-               .defaultSuccessUrl("/security-login")
-               .failureUrl("/security-login/login"));
+        http.formLogin(form -> form
+                .usernameParameter("loginId")
+                .passwordParameter("password")
+                .loginPage("/security-login/login")
+                .defaultSuccessUrl("/security-login/info")
+                .failureUrl("/security-login"));
        http.logout(logout -> logout
                .logoutUrl("/security-login/logout")
                .invalidateHttpSession(true).deleteCookies("JSESSIONID"));

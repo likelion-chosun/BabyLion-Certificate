@@ -6,6 +6,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ScheduleResponse {
+    private Long id;
     private String title;
     private String description;
 

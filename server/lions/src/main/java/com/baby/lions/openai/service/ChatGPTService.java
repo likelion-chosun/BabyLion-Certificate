@@ -1,6 +1,7 @@
 package com.baby.lions.openai.service;
 
 
+import com.baby.lions.login.util.SecurityUtils;
 import com.baby.lions.openai.dto.ChatGPTRequest;
 import com.baby.lions.openai.dto.ChatGPTResponse;
 import com.baby.lions.openai.entity.Schedule;
@@ -27,13 +28,23 @@ public class ChatGPTService {
     private final JdbcTemplate jdbcTemplate;
 
     //DB 지정 필요
-    public void resetRepositories() {
-        jdbcTemplate.execute("TRUNCATE TABLE schedule");
-        jdbcTemplate.execute("TRUNCATE TABLE chat_record");
-    }
+//    public void resetRepositories() {
+//        Long userId = SecurityUtils.getCurrentUserId();
+//        if (userId != null) {
+//            jdbcTemplate.update("DELETE FROM schedule WHERE user_id = ?", userId);
+//            jdbcTemplate.update("DELETE FROM chat_record WHERE user_id = ?", userId);
+//        } else {
+//            throw new IllegalStateException("사용자 ID를 찾을 수 없습니다.");
+//        }
+//    }
 
     public String createSchedules(String prompt) throws JsonProcessingException {
-        resetRepositories();
+        Long userId = SecurityUtils.getCurrentUserId();
+        if (userId == null) {
+            throw new IllegalStateException("사용자 ID를 찾을 수 없습니다.");
+        }
+
+        //resetRepositories();
         String input;
         try {
             Map<String, String> promptMap = objectMapper.readValue(prompt, Map.class);
@@ -61,8 +72,6 @@ public class ChatGPTService {
                 "]\n" +
                 "입력: " + input;
 
-
-
         ChatGPTRequest request = new ChatGPTRequest("gpt-3.5-turbo", basePrompt, 1, 256, 1, 0, 0);
         ChatGPTResponse response = gptCommuteService.getChatGPTResponse(request);
 
@@ -71,7 +80,7 @@ public class ChatGPTService {
         }
 
         String content = response.getChoices().get(0).getMessage().getContent();
-        chatRecordService.saveChatRecord(input, content);
+        chatRecordService.saveChatRecord(userId, input, content);
 
         List<Schedule> schedules;
         try {
@@ -81,7 +90,7 @@ public class ChatGPTService {
             throw e;
         }
 
-        scheduleService.saveSchedules(objectMapper.writeValueAsString(schedules));
+        scheduleService.saveSchedules(userId, schedules);
 
         return content;
     }
