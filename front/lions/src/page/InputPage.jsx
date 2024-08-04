@@ -2,17 +2,30 @@ import styled from 'styled-components'
 import Tag from '../component/Tag.jsx'
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import axios from 'axios';
 
-function InputPage() {
+function InputPage(props) {
 
-  const [Words, setWords] = useState(['비오는', '행복한', '우울한', '맑은', '쉬고싶은', '지루한', '에너지 넘치는', '😍', '😭']);
+  const [Words, setWords] = useState(['비오는', '행복한', '우울한', '맑은', '쉬고싶은', '지루한', '에너지 넘치는', '슬픈', '😭']);
   const [Toggle, setToggle] = useState(Array(9).fill(false));
-  const res = []
+  let res = {
+    "prompt":""
+  }
   function makeres(){
     for(let i=0; i<Toggle.length; i++ )
-      if(Toggle[i]) res.push(Words[i]);
-    res.push(Direct);
-    console.log(res) //확인용 출력
+      if(Toggle[i]) res.prompt += Words[i];
+    res.prompt += Direct;
+    const config = {"Content-Type": 'application/json'};
+
+    axios.post('https://babylion-api.yeongmin.kr/gpt/chat',res,config)
+    .then((respones)=>{
+      props.setR(respones.data);
+    })
+    .catch((error)=>{
+      console.log("ERROR: "+error.message);
+    });
+    
+    console.log(props.R) //확인용 출력
   }
 
   const [Direct,setDirect] = useState('');
@@ -33,7 +46,7 @@ function InputPage() {
         <Input onChange={onChange} placeholder='직접 입력'></Input>
       </div>
 
-      <Link onClick={()=>{ makeres(); }} to='/Recommend'><Submit>일정 추천받기</Submit></Link>
+      <Link onClick={()=>{ makeres(); console.log(JSON.stringify(res)) }} to='/Recommend'><Submit>일정 추천받기</Submit></Link>
       {/* 실사용때 위에는 Link태그로 감싸져야함 */}
     </Container>
   )

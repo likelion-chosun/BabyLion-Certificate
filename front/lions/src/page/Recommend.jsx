@@ -1,43 +1,51 @@
 import styled from "styled-components";
-import { Plus } from 'lucide-react';
+import { Plus, ChevronLeft } from 'lucide-react';
 import Item from '../component/Item.jsx';
-import { ChevronLeft } from 'lucide-react';
 import { Routes, Link, Route } from 'react-router-dom';
+import axios from 'axios';
+import { useState } from "react";
+import moment from "moment";
 
-function Recommend() {
 
-    const recList = [
-        {
-            name:'운동 하기',
-            desc:'오늘은 미세먼지가 적어요',
-            c:'#FFAAAA',
-        },
-        {
-            name:'피크닉 가기',
-            desc:'오늘은 날씨가 맑아요',
-            c:'#BAFF99',
-        },
-        {
-            name:'영화 감상하기',
-            desc:'영화 감상은 어떠신가요',
-            c:'#C4EDFF',
-        },
-        {
-            name:'카페 가기',
-            desc:'음료 한잔 어떠신가요',
-            c:'#F8FFA4',
-        }
+function Recommend(props) {
+
+    // const [data, setData] = useState(null);
+    // const [loading, setLoading] = useState(true);
+    // const [error, setError] = useState(null);
+
+    const recList = props.R;
+    const [Toggle, setToggle] = useState(Array(4).fill(false));
+    const C = [
+        '#FFAAAA',
+        '#BAFF99',
+        '#C4EDFF',
+        '#F8FFA4',
     ]
+    function append(){
+        props.R.map((obj)=>{
+            const data = {
+                "title": "집 앞 산책",
+                "date": "2024-08-04",
+                "startTime": "07:00",
+                "endTime": "08:00"
+            }
+            axios.post('https://babylion-api.yeongmin.kr/calendar/adddirect',data)
+            .then(()=>{console.log("one!")})
+            .catch(()=>{})
+        });
+    }
 
     return (
         <Container>
             <Schedule>
                 <Link style={{ width: 'fit-content' }} to='/'><ChevronLeft /></Link>
 
-                {recList.map((O)=>( <Item name={O.name} desc={O.desc} c={O.c} /> ))}
+                {recList.map((O,i) => (<Item name={O.title} desc={O.description} c={C[i]} Toggle={Toggle} setToggle={setToggle} i={i} />))}
+
             </Schedule>
 
-            <Link onClick={()=>{}} to='/Schedule'><Submit>일정 추가하기</Submit></Link>
+            <Link onClick={() => { append(); console.log(Toggle); }} to='/Schedule'><Submit>일정 추가하기</Submit></Link>
+            {/* 위 onClick은 선택된 일정을 추가하는 POST를 보내야함 */}
         </Container>
     )
 }
