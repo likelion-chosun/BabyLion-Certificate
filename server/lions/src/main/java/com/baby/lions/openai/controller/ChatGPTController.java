@@ -27,6 +27,7 @@ public class ChatGPTController {
 	@PostMapping("/chat")
 	public ResponseEntity<String> chat(@RequestBody @Valid String prompt) {
 		try {
+			log.info("info: " + prompt);
 			String responseContent = chatGPTService.createSchedules(prompt);
 			return ResponseEntity.ok(responseContent);
 		} catch (JsonProcessingException e) {
