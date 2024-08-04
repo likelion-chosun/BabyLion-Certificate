@@ -22,32 +22,32 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final ObjectMapper objectMapper;
     private final UserRepository userRepository;
-
-    public void saveSchedules(Long userId, List<Schedule> schedules) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자 ID: " + userId));
-
-        for (Schedule schedule : schedules) {
-            schedule.setUser(user); // 각 일정에 사용자 설정
-        }
-        scheduleRepository.saveAll(schedules);
-    }
-
-    public List<ScheduleResponse> getSchedules(Long userId) {
-        try {
-            List<Schedule> schedules = scheduleRepository.findByUserId(userId);
-            return schedules.stream()
-                    .map(schedule -> new ScheduleResponse(
-                            schedule.getId(),
-                            schedule.getTitle(),
-                            schedule.getDescription()
-                    ))
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            log.error("스케줄을 가져오는 중 오류가 발생: ", e);
-            throw new RuntimeException("스케줄을 가져오는 중 오류가 발생했습니다.", e);
-        }
-    }
+        // 로그인 구현되면 주석 풀 것
+//    public void saveSchedules(Long userId, List<Schedule> schedules) {
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자 ID: " + userId));
+//
+//        for (Schedule schedule : schedules) {
+//            schedule.setUser(user); // 각 일정에 사용자 설정
+//        }
+//        scheduleRepository.saveAll(schedules);
+//    }
+//
+//    public List<ScheduleResponse> getSchedules(Long userId) {
+//        try {
+//            List<Schedule> schedules = scheduleRepository.findByUserId(userId);
+//            return schedules.stream()
+//                    .map(schedule -> new ScheduleResponse(
+//                            schedule.getId(),
+//                            schedule.getTitle(),
+//                            schedule.getDescription()
+//                    ))
+//                    .collect(Collectors.toList());
+//        } catch (Exception e) {
+//            log.error("스케줄을 가져오는 중 오류가 발생: ", e);
+//            throw new RuntimeException("스케줄을 가져오는 중 오류가 발생했습니다.", e);
+//        }
+//    }
 
     public List<Schedule> parseSchedules(String responseContent) throws JsonProcessingException {
         try {
@@ -64,6 +64,20 @@ public class ScheduleService {
         } catch (JsonProcessingException e) {
             log.error("JSON 파싱 오류: ", e);
             throw e;
+        }
+    }
+
+    public void saveSchedules(String responseContent) throws JsonProcessingException {
+        List<Schedule> schedules = parseSchedules(responseContent);
+        scheduleRepository.saveAll(schedules);
+    }
+
+    public List<Schedule> getSchedules() {
+        try {
+            return scheduleRepository.findAll();
+        } catch (Exception e) {
+            log.error("스케줄을 가져오는 중 오류가 발생: ", e);
+            throw new RuntimeException("스케줄을 가져오는 중 오류가 발생했습니다.", e);
         }
     }
 
