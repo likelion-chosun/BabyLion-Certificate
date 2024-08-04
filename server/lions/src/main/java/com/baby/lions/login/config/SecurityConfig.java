@@ -21,10 +21,10 @@ public class SecurityConfig   {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/security-login/gpt/**").authenticated()
-                .requestMatchers("/security-login/schedule/**").authenticated()
-                .requestMatchers("/security-login/calendar/**").authenticated()
-                .requestMatchers("/security-login/admin").hasAuthority(UserRole.ADMIN.name())
+//                .requestMatchers("/gpt/**").authenticated()
+//                .requestMatchers("/schedule/**").authenticated()
+//                .requestMatchers("/calendar/**").authenticated()
+                .requestMatchers("/admin").hasAuthority(UserRole.ADMIN.name())
                 .anyRequest().permitAll()
         );
         http.formLogin(form -> form
@@ -37,7 +37,8 @@ public class SecurityConfig   {
                 .logoutUrl("/security-login/logout")
                 .invalidateHttpSession(true).deleteCookies("JSESSIONID"));
         http.oauth2Login(kakao -> kakao
-                .defaultSuccessUrl("/security-login")
+                .loginProcessingUrl("/spring-login")
+                .defaultSuccessUrl("/security-login/gpt")
                 .userInfoEndpoint(userInfo -> userInfo
                         .userService(principalOauth2UserService)));
 
