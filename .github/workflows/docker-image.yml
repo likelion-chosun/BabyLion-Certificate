@@ -1,0 +1,27 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node: [ 14, 16, 18 ]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node }}
+
+    - name: web docker build and push
+      run: |
+        docker login -u ${{ secrets.DOCKER_USERNAME }} 
+        docker build -t ${{ secrets.DOCKER_REPO }}/simple-react-app:1.0 .
+        docker push ${{ secrets.DOCKER_REPO }}/simple-react-app:1.0
+      working-directory: front/lions
