@@ -15,7 +15,7 @@ public class GPTCommuteService {
 	private final String apiURL;
 	private final RestTemplate template;
 
-	public GPTCommuteService(@Value("${openai.model}") String model, @Value("${openai.url.prompt}") String apiURL, RestTemplate template) {
+	public GPTCommuteService(@Value("${openai.model}") String model, @Value("${openai.url}") String apiURL, RestTemplate template) {
 		this.model = model;
 		this.apiURL = apiURL;
 		this.template = template;
