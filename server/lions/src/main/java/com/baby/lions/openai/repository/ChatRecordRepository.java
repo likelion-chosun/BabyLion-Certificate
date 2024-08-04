@@ -1,6 +1,6 @@
 package com.baby.lions.openai.repository;
 
-import com.baby.lions.openai.dto.ChatRecord;
+import com.baby.lions.openai.entity.ChatRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

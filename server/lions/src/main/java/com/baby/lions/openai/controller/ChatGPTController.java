@@ -7,13 +7,14 @@ import com.baby.lions.openai.service.ScheduleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+
+import static com.baby.lions.login.util.SecurityUtils.getCurrentUserId;
 
 
 @Slf4j
@@ -25,13 +26,13 @@ public class ChatGPTController {
 	private final ChatGPTService chatGPTService;
 	private final ScheduleService scheduleService;
 
-	@Value("${openai.api.key}")
-	private String openAiKey;
-
-	@PostMapping(value = "/chat")
+	@PostMapping("/chat")
 	public ResponseEntity<String> chat(@RequestBody @Valid String prompt) {
 		try {
-			log.info("info: " + openAiKey);
+			Long userId = getCurrentUserId();
+			if (userId == null) {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("사용자 인증이 필요합니다.");
+			}
 			String responseContent = chatGPTService.createSchedules(prompt);
 			return ResponseEntity.ok(responseContent);
 		} catch (JsonProcessingException e) {

@@ -34,7 +34,5 @@ public class ChatGPTRequest {
         this.topP=topP;
         this.frequencyPenalty=frequencyPenalty;
         this.presencePenalty = presencePenalty;
-
     }
-
 }
