@@ -19,7 +19,7 @@ public class SecurityConfig   {
     private final PrincipalOauth2UserService principalOauth2UserService;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-       http.csrf(AbstractHttpConfigurer::disable);
+        http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(auth -> auth
                 .anyRequest().permitAll()
         );
