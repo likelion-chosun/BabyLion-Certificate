@@ -37,7 +37,7 @@ public class SecurityLoginController {
         return ResponseEntity.ok("home");
     }
 
-    @GetMapping("/join")
+    @GetMapping(value = "/join")
     public ModelAndView joinPage(Model model) {
         model.addAttribute("loginType", "security-login");
         model.addAttribute("pageName", "Security 로그인");
@@ -46,7 +46,7 @@ public class SecurityLoginController {
         return new ModelAndView("join");
     }
 
-    @PostMapping("/join")
+    @PostMapping(value = "/join")
     public ResponseEntity<String> join(@Valid @RequestBody JoinRequest joinRequest, BindingResult bindingResult, Model model) {
         model.addAttribute("loginType", "security-login");
         model.addAttribute("pageName", "Security 로그인");
@@ -74,7 +74,7 @@ public class SecurityLoginController {
         return ResponseEntity.ok("redirect:/security-login/");
     }
 
-    @GetMapping("/login")
+    @GetMapping(value = "/login")
     public ModelAndView loginPage(Model model) {
         model.addAttribute("loginType", "security-login");
         model.addAttribute("pageName", "Security 로그인");
@@ -83,7 +83,7 @@ public class SecurityLoginController {
         return new ModelAndView("login");
     }
 
-    @GetMapping("/info")
+    @GetMapping(value = "/info")
     public ResponseEntity<String> userInfo(Model model, Authentication auth) {
         model.addAttribute("loginType", "security-login");
         model.addAttribute("pageName", "Security 로그인");
@@ -98,7 +98,7 @@ public class SecurityLoginController {
         return ResponseEntity.ok("Success login");
     }
 
-    @GetMapping("/admin")
+    @GetMapping(value = "/admin")
     public ModelAndView adminPage( Model model) {
         model.addAttribute("loginType", "security-login");
         model.addAttribute("pageName", "Security 로그인");
