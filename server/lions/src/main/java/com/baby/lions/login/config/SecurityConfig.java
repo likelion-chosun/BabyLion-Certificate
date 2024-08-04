@@ -19,28 +19,29 @@ public class SecurityConfig   {
     private final PrincipalOauth2UserService principalOauth2UserService;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-       http.csrf(AbstractHttpConfigurer::disable);
-       http.authorizeHttpRequests(auth -> auth
-               .requestMatchers("/security-login/info").authenticated()
-               .requestMatchers("/security-login/admin").hasAuthority(UserRole.ADMIN.name())
-               .anyRequest().permitAll()
-       );
-       http.formLogin(form -> form
-               .usernameParameter("loginId")
-               .passwordParameter("password")
-               .loginPage("/security-login/login")
-               .defaultSuccessUrl("/security-login")
-               .failureUrl("/security-login/login"));
-       http.logout(logout -> logout
-               .logoutUrl("/security-login/logout")
-               .invalidateHttpSession(true).deleteCookies("JSESSIONID"));
-       http.oauth2Login(kakao -> kakao
-               .loginPage("/security-login/login")
-               .defaultSuccessUrl("/security-login")
-               .userInfoEndpoint(userInfo -> userInfo
-                       .userService(principalOauth2UserService)));
+        http.csrf(AbstractHttpConfigurer::disable);
+        http.authorizeHttpRequests(auth -> auth
+                .requestMatchers("/security-login/gpt/**").authenticated()
+                .requestMatchers("/security-login/schedule/**").authenticated()
+                .requestMatchers("/security-login/calendar/**").authenticated()
+                .requestMatchers("/security-login/admin").hasAuthority(UserRole.ADMIN.name())
+                .anyRequest().permitAll()
+        );
+        http.formLogin(form -> form
+                .usernameParameter("loginId")
+                .passwordParameter("password")
+                .loginPage("/security-login/login")
+                .defaultSuccessUrl("/security-login/info")
+                .failureUrl("/security-login"));
+        http.logout(logout -> logout
+                .logoutUrl("/security-login/logout")
+                .invalidateHttpSession(true).deleteCookies("JSESSIONID"));
+        http.oauth2Login(kakao -> kakao
+                .defaultSuccessUrl("/security-login")
+                .userInfoEndpoint(userInfo -> userInfo
+                        .userService(principalOauth2UserService)));
 
-       return http.build();
+        return http.build();
     }
 
 }

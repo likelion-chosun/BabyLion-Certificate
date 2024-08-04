@@ -7,6 +7,7 @@ import com.baby.lions.login.service.UserService;
 import jakarta.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,7 +23,7 @@ public class SecurityLoginController {
     private final UserService userService;
 
     @GetMapping(value = {"", "/"})
-    public ModelAndView home(Model model, Authentication auth) {
+    public ResponseEntity<String> home(Model model, Authentication auth) {
         model.addAttribute("loginType", "security-login");
         model.addAttribute("pageName", "Security 로그인");
         ModelAndView modelAndView = new ModelAndView("home");
@@ -33,7 +34,7 @@ public class SecurityLoginController {
             }
         }
 
-        return modelAndView;
+        return ResponseEntity.ok("home");
     }
 
     @GetMapping("/join")
@@ -46,7 +47,7 @@ public class SecurityLoginController {
     }
 
     @PostMapping("/join")
-    public ModelAndView join(@Valid @RequestBody JoinRequest joinRequest, BindingResult bindingResult, Model model) {
+    public ResponseEntity<String> join(@Valid @RequestBody JoinRequest joinRequest, BindingResult bindingResult, Model model) {
         model.addAttribute("loginType", "security-login");
         model.addAttribute("pageName", "Security 로그인");
         model.addAttribute("joinRequest",joinRequest);
@@ -63,14 +64,14 @@ public class SecurityLoginController {
             bindingResult.addError(new FieldError("joinRequest", "passwordCheck", "바밀번호가 일치하지 않습니다."));
         }
         ModelAndView mav = new ModelAndView();
-	    if (bindingResult.hasErrors()) {
-		    mav.setViewName("join");
-		    return mav;
+        if(bindingResult.hasErrors()) {
+            mav.setViewName("join");
+            return ResponseEntity.ok("join");
         }
 
         userService.join2(joinRequest);
         mav.setViewName("redirect:/security-login/");
-        return mav;
+        return ResponseEntity.ok("redirect:/security-login/");
     }
 
     @GetMapping("/login")
@@ -83,18 +84,18 @@ public class SecurityLoginController {
     }
 
     @GetMapping("/info")
-    public ModelAndView userInfo(Model model, Authentication auth) {
+    public ResponseEntity<String> userInfo(Model model, Authentication auth) {
         model.addAttribute("loginType", "security-login");
         model.addAttribute("pageName", "Security 로그인");
 
         User loginUser = userService.getLoginUserByLoginId(auth.getName());
 
         if(loginUser == null) {
-            return new ModelAndView("redirect:/security-login/login");
+            return ResponseEntity.ok("fail");
         }
 
         model.addAttribute("user", loginUser);
-        return new ModelAndView("info");
+        return ResponseEntity.ok("Success login");
     }
 
     @GetMapping("/admin")
