@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { Plus } from 'lucide-react';
-import { Minus } from 'lucide-react';
+import { Plus,Minus } from 'lucide-react';
 import { useState } from "react";
 
 function Item({name,desc,c}){
