@@ -21,9 +21,9 @@ public class SecurityConfig   {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/gpt/**").authenticated()
-                .requestMatchers("/schedule/**").authenticated()
-                .requestMatchers("/calendar/**").authenticated()
+//                .requestMatchers("/gpt/**").authenticated()
+//                .requestMatchers("/schedule/**").authenticated()
+//                .requestMatchers("/calendar/**").authenticated()
                 .requestMatchers("/admin").hasAuthority(UserRole.ADMIN.name())
                 .anyRequest().permitAll()
         );
