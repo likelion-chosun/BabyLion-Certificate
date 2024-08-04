@@ -20,11 +20,16 @@ public class SecurityConfig   {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
        http.csrf(AbstractHttpConfigurer::disable);
-       http.authorizeHttpRequests(auth -> auth
-               .requestMatchers("/security-login/info").authenticated()
-               .requestMatchers("/security-login/admin").hasAuthority(UserRole.ADMIN.name())
-               .anyRequest().permitAll()
-       );
+       http.csrf(AbstractHttpConfigurer::disable);
+        http.authorizeHttpRequests(auth -> auth
+                .anyRequest().permitAll()
+        );
+        // 로그인 구현 시 주석 해제
+//       http.authorizeHttpRequests(auth -> auth
+//               .requestMatchers("/security-login/info").authenticated()
+//               .requestMatchers("/security-login/admin").hasAuthority(UserRole.ADMIN.name())
+//               .anyRequest().permitAll()
+//       );
         http.formLogin(form -> form
                 .usernameParameter("loginId")
                 .passwordParameter("password")
