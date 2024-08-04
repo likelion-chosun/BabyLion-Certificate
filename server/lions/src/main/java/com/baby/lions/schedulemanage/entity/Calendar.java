@@ -1,9 +1,7 @@
 package com.baby.lions.schedulemanage.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.baby.lions.login.entity.User;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -31,4 +29,8 @@ public class Calendar {
         this.startTime = startTime;
         this.endTime = endTime;
     }
+
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
 }

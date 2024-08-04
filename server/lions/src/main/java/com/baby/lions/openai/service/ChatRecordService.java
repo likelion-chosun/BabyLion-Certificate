@@ -12,11 +12,20 @@ import org.springframework.stereotype.Service;
 public class ChatRecordService {
     private final ChatRecordRepository chatRecordRepository;
 
-    public void saveChatRecord(Long userId, String userMessage, String botMessage) {
+    // 로그인 구현 되면 주석 풀 것
+//    public void saveChatRecord(Long userId, String userMessage, String botMessage) {
+//        ChatRecord chatRecord = ChatRecord.builder()
+//                .userMessage(userMessage)
+//                .botMessage(botMessage)
+//                .user(User.builder().id(userId).build()) // 사용자 설정
+//                .build();
+//        chatRecordRepository.save(chatRecord);
+//    }
+
+    public void saveChatRecord(String userMessage, String botMessage) {
         ChatRecord chatRecord = ChatRecord.builder()
                 .userMessage(userMessage)
                 .botMessage(botMessage)
-                .user(User.builder().id(userId).build()) // 사용자 설정
                 .build();
         chatRecordRepository.save(chatRecord);
     }

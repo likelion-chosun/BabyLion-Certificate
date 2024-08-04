@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     List<Schedule> findAll();
-
-    List<Schedule> findByUserId(Long userId);
+// 로그인 구현 시 풀 것
+//    List<Schedule> findByUserId(Long userId);
 }
 

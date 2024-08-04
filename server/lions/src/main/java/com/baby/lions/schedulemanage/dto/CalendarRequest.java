@@ -20,6 +20,7 @@ public class CalendarRequest {
     private String date;
     private String startTime;
     private String endTime;
+    private Long userId;
 
 
     public CalendarRequest(String title, String date, String startTime, String endTime) {

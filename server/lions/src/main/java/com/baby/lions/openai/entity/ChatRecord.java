@@ -23,7 +23,7 @@ public class ChatRecord {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String botMessage;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
 }

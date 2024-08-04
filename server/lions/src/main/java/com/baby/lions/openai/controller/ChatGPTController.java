@@ -25,14 +25,28 @@ public class ChatGPTController {
 
 	private final ChatGPTService chatGPTService;
 	private final ScheduleService scheduleService;
+	// 로그인 구현 되면 주석 풀 것
+//	@PostMapping("/chat")
+//	public ResponseEntity<String> chat(@RequestBody @Valid String prompt) {
+//		try {
+//			Long userId = getCurrentUserId();
+//			if (userId == null) {
+//				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("사용자 인증이 필요합니다.");
+//			}
+//			String responseContent = chatGPTService.createSchedules(prompt);
+//			return ResponseEntity.ok(responseContent);
+//		} catch (JsonProcessingException e) {
+//			log.error("JSON 처리 오류: ", e);
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("잘못된 JSON 요청입니다.");
+//		} catch (Exception e) {
+//			log.error("채팅 요청 처리 중 오류가 발생: ", e);
+//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("채팅 처리중 오류가 발생했습니다.");
+//		}
+//	}
 
 	@PostMapping("/chat")
 	public ResponseEntity<String> chat(@RequestBody @Valid String prompt) {
 		try {
-			Long userId = getCurrentUserId();
-			if (userId == null) {
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("사용자 인증이 필요합니다.");
-			}
 			String responseContent = chatGPTService.createSchedules(prompt);
 			return ResponseEntity.ok(responseContent);
 		} catch (JsonProcessingException e) {
