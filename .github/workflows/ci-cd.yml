@@ -1,4 +1,4 @@
-name: Server CI/CD with Gradle
+name: CI/CD with Gradle
 
 on:
   push:
