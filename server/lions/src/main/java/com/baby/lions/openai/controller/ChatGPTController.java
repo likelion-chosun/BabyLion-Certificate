@@ -7,6 +7,7 @@ import com.baby.lions.openai.service.ScheduleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +25,14 @@ public class ChatGPTController {
 	private final ChatGPTService chatGPTService;
 	private final ScheduleService scheduleService;
 
+	@Value("${openai.api.key}")
+	private String openAiKey;
+
 	@PostMapping("/chat")
 	public ResponseEntity<String> chat(@RequestBody @Valid String prompt) {
 		try {
-			log.info("info: " + prompt);
 			String responseContent = chatGPTService.createSchedules(prompt);
+			log.info("info: " + openAiKey);
 			return ResponseEntity.ok(responseContent);
 		} catch (JsonProcessingException e) {
 			log.error("JSON 처리 오류: ", e);
