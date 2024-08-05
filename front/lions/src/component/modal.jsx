@@ -18,6 +18,10 @@ export default function Modal(props) {
         props.setisOpen(false);
     }
     const [name, setname] = useState('');
+    const [time1, setTime1] = useState('');
+    const [time2, setTime2] = useState('');
+    const handle1 = (event)=>{ setTime1(event.target.value); console.log(event.target.value); }
+    const handle2 = (event)=>{ setTime2(event.target.value); console.log(event.target.value); }
 
     return (
         <Container onClick={() => props.setisOpen(false)}>
@@ -25,7 +29,11 @@ export default function Modal(props) {
 
                 <Top><h2>일정 추가</h2> <X onClick={() => props.setisOpen(false)} strokeWidth='1.6' /></Top>
                 <Input type='text' onChange={onChange} placeholder="제목" />
-                <Submit onClick={append}><p>추가하기</p></Submit>
+                <input type="time" value={time1}  onChange={handle1} />
+                <input type="time" value={time2}  onChange={handle2} />
+
+                <div onClick={()=>{console.log(time1 , time2); } }><p>추가하기</p></div>
+                {/* 위 온클릭 안에는 append가 들어가야함 */}
             </Contents>
         </Container>
     )

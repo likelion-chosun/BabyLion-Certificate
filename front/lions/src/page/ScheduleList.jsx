@@ -6,76 +6,22 @@ import './Calendar.css';
 import { ChevronLeft, Plus } from 'lucide-react';
 import moment from "moment";
 import Modal from "../component/modal";
+import axios from "axios";
 
 
 export default function ScheduleList() {
 
-  const tmpList = [
-    {
-      day: "2024-08-31",
-      weekday: "월요일",
-      schedules: [
-        {
-          title: "31도서관 가기",
-          startTime: "09:00",
-          endTime: "10:00"
-        },
-        {
-          title: "영화 보기",
-          startTime: "11:00",
-          endTime: "12:00"
-        },
-        {
-          title: "집에서 요리하기",
-          startTime: "13:00",
-          endTime: "15:00"
-        },
-        {
-          title: "온천가기",
-          startTime: "13:00",
-          endTime: "15:00"
-        }
-      ]
-    },
-    {
-      day: "2024-08-01",
-      weekday: "목요일",
-      schedules: [
-        {
-          title: "일정입니다!",
-          startTime: "09:00",
-          endTime: "10:00"
-        },
-        {
-          title: "밥약",
-          startTime: "11:00",
-          endTime: "12:00"
-        },
-        {
-          title: "일정",
-        },
-        {
-          title: "스크롤 테스트",
-        },
-        {
-          title: "스크롤 테스트",
-        },
-        {
-          title: "스크롤 테스트",
-        },
-        {
-          title: "스크롤 테스트",
-        },
-        {
-          title: "스크롤 테스트",
-        },
-
-      ]
-    }
-  ]
+  const tmpList = axios.get('https://babylion-api.yeongmin.kr/calendar/events/all');
   const [value, onChange] = useState(new Date());
   const [isOpen, setisOpen] = useState(false);
-  const [List,setList] = useState(tmpList);
+  const [List, setList] = useState([]);
+  tmpList.then((res) => {
+    console.log(res);
+
+  })
+  setList(tmpList);
+
+  console.log(List);
 
   return (
     <Container>
@@ -108,25 +54,25 @@ export default function ScheduleList() {
 
       <View>
         <Top>
-          <h4>Schedule - {moment(value).format("YYYY년 MM월 DD일")}</h4><Plus onClick={()=>setisOpen(true)} strokeWidth='1.5' />
+          <h4>Schedule - {moment(value).format("YYYY년 MM월 DD일")}</h4><Plus onClick={() => { setisOpen(true); console.log(tmpList) }} strokeWidth='1.5' />
         </Top>
 
         <Box>
-        {/* List의 day들에 대해 선택한날짜랑 같다면 -> 선택한날짜의schedules mapping  */}
-        {List.find((obj) => obj.day === moment(value).format('YYYY-MM-DD'))
-          ? List.find((obj) => obj.day === moment(value).format('YYYY-MM-DD'))
-            .schedules.map((s, index) => (
-              <Schedule>
-                {s.title}<Time><div>{s.startTime}</div>{s.endTime}</Time>
-              </Schedule>
-            ))
-          : null}
+          {/* List의 day들에 대해 선택한날짜랑 같다면 -> 선택한날짜의schedules mapping  */}
+          {List.find((obj) => obj.day === moment(value).format('YYYY-MM-DD'))
+            ? List.find((obj) => obj.day === moment(value).format('YYYY-MM-DD'))
+              .dayevent.map((s, index) => (
+                <Schedule>
+                  {s.title}<Time><div>{s.startTime}</div>{s.endTime}</Time>
+                </Schedule>
+              ))
+            : null}
         </Box>
 
       </View>
 
-      
-      {isOpen?<Modal setisOpen={setisOpen} List={List} setList={setList}  />:null}
+
+      {isOpen ? <Modal setisOpen={setisOpen} List={List} setList={setList} /> : null}
     </Container>
   )
 }
