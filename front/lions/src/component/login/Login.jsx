@@ -1,7 +1,8 @@
 import SocialKakao from "./SocialKakao";
-import SocialNaver from "./SocialNaver";
-
+// import SocialNaver from "./SocialNaver";
 import "./Login.css";
+
+//클라이언트
 
 export default function Login() {
   return (
@@ -17,10 +18,7 @@ export default function Login() {
         <div className="kakao-button">
           <SocialKakao />
         </div>
-
-        <div className="naver-button">
-          <SocialNaver />
-        </div>
+        <div className="naver-button">{/* <SocialNaver /> */}</div>
       </div>
     </div>
   );
