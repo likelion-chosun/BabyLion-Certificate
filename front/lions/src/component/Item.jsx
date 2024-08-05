@@ -2,17 +2,26 @@ import styled from "styled-components";
 import { Plus,Minus } from 'lucide-react';
 import { useState } from "react";
 
-function Item({name,desc,c}){
+function Item({name,desc,c,Toggle,setToggle,i}){
 
-    const [Added,setAdded] = useState(false);
+    const [isAdd,setisAdd] = useState(false);
+
+    function toggle(){
+        setisAdd(!isAdd);
+        const tmp = Toggle;
+        tmp[i] = !tmp[i];
+        setToggle(tmp);
+    
+        // console.log(props.Toggle); //디버깅용 출력
+    }
 
     return (
-        <Box col={c} bg={Added}>
+        <Box col={c} bg={isAdd} onClick={toggle} >
                 <div>
                     <Name>{name}</Name>
                     <Desc>{desc}</Desc>
                 </div>
-                <Add onClick={()=>{setAdded(!Added)}} >{Added?<Minus />:<Plus />}</Add>
+                <Add onClick={toggle} >{isAdd?<Minus />:<Plus />}</Add>
         </Box>
     )
 }
@@ -32,7 +41,7 @@ const Name = styled.h4`
     font-size: 26px;
     font-weight: 500;
     margin: 0;
-    color: #292929;
+    color: #484848;
 `
 const Desc = styled.p`
     font-size: 14px;

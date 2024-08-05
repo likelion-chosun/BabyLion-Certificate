@@ -1,6 +1,7 @@
 package com.baby.lions.schedulemanage.service;
 
 
+import com.baby.lions.login.util.SecurityUtils;
 import com.baby.lions.openai.entity.Schedule;
 import com.baby.lions.openai.repository.ScheduleRepository;
 import com.baby.lions.schedulemanage.dto.CalendarDayResponse;
@@ -35,9 +36,12 @@ public class CalendarService {
         return LocalTime.parse(timeStr, DateTimeFormatter.ofPattern("HH:mm"));
     }
 
+
+
     // 일정 직접 받아서 추가하기
     @Transactional
     public CalendarResponse createEvent(CalendarRequest request) {
+        Long userId = SecurityUtils.getCurrentUserId();
         LocalDate date = convertToLocalDate(request.getDate());
         LocalTime startTime = convertToLocalTime(request.getStartTime());
         LocalTime endTime = convertToLocalTime(request.getEndTime());
@@ -48,6 +52,7 @@ public class CalendarService {
         event.setDate(date);
         event.setStartTime(startTime);
         event.setEndTime(endTime);
+        //event.setUser(userId);
 
         // 엔티티를 데이터베이스에 저장
         calendarRepository.save(event);
@@ -102,6 +107,7 @@ public class CalendarService {
 
     @Transactional(readOnly = true)
     public List<CalendarDayResponse> getAllEvents() {
+        Long userId = SecurityUtils.getCurrentUserId();
         List<Calendar> events = calendarRepository.findAll();
 
         // 날짜를 기준으로 정렬하여 그룹화
