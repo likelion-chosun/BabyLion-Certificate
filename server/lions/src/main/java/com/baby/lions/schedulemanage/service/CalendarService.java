@@ -94,6 +94,7 @@ public class CalendarService {
             calendarRepository.save(event);
 
             CalendarResponse response = new CalendarResponse(
+                    event.getId(),
                     event.getTitle(),
                     event.getDate().toString(),
                     event.getStartTime().toString(),
