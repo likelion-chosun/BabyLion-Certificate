@@ -7,8 +7,8 @@ import axios from "axios";
 export default function Modal(props) {
 
     const [name, setname] = useState('');
-    const [time1, setTime1] = useState('');
-    const [time2, setTime2] = useState('');
+    const [time1, setTime1] = useState(moment(new Date()).format('HH:mm'));
+    const [time2, setTime2] = useState(moment(new Date()).format('HH:mm'));
     const handle1 = (event)=>{ setTime1(event.target.value); console.log(event.target.value); }
     const handle2 = (event)=>{ setTime2(event.target.value); console.log(event.target.value); }
 
@@ -21,7 +21,7 @@ export default function Modal(props) {
     const append = async () => {
         try{
         const data = {
-            "title": name,
+            "title": name?name:'내 일정',
             "date": props.cur,
             "startTime": time1,
             "endTime": time2
