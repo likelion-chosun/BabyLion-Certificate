@@ -123,7 +123,9 @@ public class CalendarService {
 
             List<CalendarResponse> scheduleResponses = dayEvents.stream()
                     .map(event -> new CalendarResponse(
+                            event.getId(),
                             event.getTitle(),
+                            event.getDate().toString(),
                             event.getStartTime().toString(),
                             event.getEndTime().toString()))
                     .collect(Collectors.toList());
