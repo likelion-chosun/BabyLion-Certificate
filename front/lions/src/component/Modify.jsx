@@ -18,17 +18,15 @@ export default function Modify(props) {
         console.log(event.target.value);
         // 값이 바뀔때마다 setname으로 name값을 변경해준다.
     }
-    function update() {
+    const update = async () => {
+        try{
         let data = props.cur;
         data.title = name;
         data.startTime = time1;
         data.endTime = time2;
-        axios.patch('https://babylion-api.yeongmin.kr/calendar/update',data)
-        .then(()=>{})
-        .catch(()=>{});
-
+        await axios.patch('https://babylion-api.yeongmin.kr/calendar/update',data);
         props.refreshList();//일정리스트 리렌더링
-        props.setisOpen(false);
+        } finally{ props.setisOpen(false); }
     }
 
     return (
