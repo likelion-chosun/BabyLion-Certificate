@@ -97,7 +97,7 @@ public class ChatGPTService {
 //
     public String createSchedules(String prompt) throws JsonProcessingException {
 
-        //resetRepositories();
+	    //resetRepositories();
         String input;
         try {
             Map<String, String> promptMap = objectMapper.readValue(prompt, Map.class);
