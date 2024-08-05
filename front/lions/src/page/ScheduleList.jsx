@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Calendar from "react-calendar";
 import './Calendar.css';
@@ -7,21 +7,34 @@ import { ChevronLeft, Plus } from 'lucide-react';
 import moment from "moment";
 import Modal from "../component/modal";
 import axios from "axios";
+import Modify from "../component/Modify";
 
 
 export default function ScheduleList() {
 
-  const tmpList = axios.get('https://babylion-api.yeongmin.kr/calendar/events/all');
-  const [value, onChange] = useState(new Date());
-  const [isOpen, setisOpen] = useState(false);
-  const [List, setList] = useState([]);
-  tmpList.then((res) => {
-    console.log(res);
+  const [value, onChange] = useState(new Date());//오늘 날짜
+  const [isOpen, setisOpen] = useState(false);//일정 추가 모달창 토글
+  const [isPAT, setisPAT] = useState(false);//수정 모달창 토글
+  const [List, setList] = useState([]);//일정리스트
+  const [cur,setcur] = useState();
 
-  })
-  setList(tmpList);
+  useEffect(()=>{
+  axios.get('https://babylion-api.yeongmin.kr/calendar/events/all')
+  .then((response)=>{ setList(response.data); })
+  .catch((error)=>{console.log(error.mesaage);});
+  },[]); //마운트때만 실행
 
-  console.log(List);
+  function deletes(id){
+    axios.delete('https://babylion-api.yeongmin.kr/calendar/delete',{ data: { "id": id } })
+    .then(()=>{})
+    .catch(()=>{});
+
+    console.log({"id" : id});
+  }
+  function update(s){
+    console.log(s);
+    axios.patch('https://babylion-api.yeongmin.kr/calendar/update',s);
+  }
 
   return (
     <Container>
@@ -63,7 +76,7 @@ export default function ScheduleList() {
             ? List.find((obj) => obj.day === moment(value).format('YYYY-MM-DD'))
               .dayevent.map((s, index) => (
                 <Schedule>
-                  {s.title}<Time><div>{s.startTime}</div>{s.endTime}</Time>
+                  <div>{s.title}</div> <PAT onClick={()=>{setisPAT(true); setcur(s); }} ></PAT>  <Del onClick={()=>{deletes(s.id);}} ></Del>  <Time><div>{s.startTime}</div>{s.endTime}</Time>
                 </Schedule>
               ))
             : null}
@@ -73,6 +86,7 @@ export default function ScheduleList() {
 
 
       {isOpen ? <Modal setisOpen={setisOpen} List={List} setList={setList} /> : null}
+      {isPAT ? <Modify cur={cur} setisOpen={setisPAT} List={List} setList={setList} /> : null }
     </Container>
   )
 }
@@ -141,4 +155,14 @@ const Time = styled.div`
   font-size: small;
   display: flex;
   flex-direction: column;
+`
+const Del = styled.div`
+  width: 20px;
+  height: 20px;
+  background-color: red;
+`
+const PAT = styled.div`
+  width: 20px;
+  height: 20px;
+  background-color: blue;
 `
