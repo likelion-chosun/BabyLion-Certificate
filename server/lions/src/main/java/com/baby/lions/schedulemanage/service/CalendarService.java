@@ -58,7 +58,7 @@ public class CalendarService {
         calendarRepository.save(event);
 
         // 저장한 엔티티를 DTO로 변환하여 반환
-        return new CalendarResponse(event.getTitle(), event.getDate().toString(),
+        return new CalendarResponse(event.getId(),event.getTitle(), event.getDate().toString(),
                 event.getStartTime().toString(), event.getEndTime().toString());
     }
 
@@ -86,6 +86,7 @@ public class CalendarService {
                     .orElse("알 수 없는 일정");
 
             Calendar event = new Calendar();
+
             event.setTitle(title);
             event.setDate(date);
             event.setStartTime(startTime);
@@ -154,6 +155,7 @@ public class CalendarService {
 
         List<CalendarResponse> scheduleResponses = filteredEvents.stream()
                 .map(event -> new CalendarResponse(
+                        event.getId(),
                         event.getTitle(),
                         event.getDate().toString(),
                         event.getStartTime().toString(),
@@ -175,6 +177,7 @@ public class CalendarService {
         }
 
         Calendar event = optionalEvent.get();
+        event.setId(updateRequest.getId());
         event.setTitle(updateRequest.getTitle());
         event.setDate(LocalDate.parse(updateRequest.getDate()));
         event.setStartTime(LocalTime.parse(updateRequest.getStartTime()));
