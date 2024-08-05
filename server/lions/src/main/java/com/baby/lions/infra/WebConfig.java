@@ -10,7 +10,8 @@ public class WebConfig implements WebMvcConfigurer {
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
 			.allowedOrigins(
-				"https://baby-lion-certificate-ipby.vercel.app/"
+				"https://baby-lion-certificate-ipby.vercel.app/",
+					"http://localhost:5173"
 			)
 			.allowedHeaders("*")
 			.allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS" , "PATCH")
