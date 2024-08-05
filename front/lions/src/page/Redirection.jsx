@@ -5,7 +5,7 @@ export default function Redirection() {
 
     useEffect(() => {
         const code = new URL(document.location.toString()).searchParams.get('code'); // 이상한코드가한가득
-        axios.post('https://babylion-api.yeongmin.kr/spring-login',code).then((r) => {
+        axios.get(` https://babylion-api.yeongmin.kr/login/oauth2/code/kakao ${code}`).then((r) => {
             console.log(r.data); // 토큰과 함께 오는 정보들을 출력해보자
             navigate('/loginSuccess'); // 
         });

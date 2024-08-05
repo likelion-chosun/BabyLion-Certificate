@@ -24,16 +24,23 @@ export default function ScheduleList() {
   .catch((error)=>{console.log(error.mesaage);});
   },[]); //마운트때만 실행
 
-  function deletes(id){
-    axios.delete('https://babylion-api.yeongmin.kr/calendar/delete',{ data: { "id": id } })
-    .then(()=>{})
-    .catch(()=>{});
+    const deletes = async (id) => {
+      try{
+        await axios.delete('https://babylion-api.yeongmin.kr/calendar/delete',{ data: { "id": id } });
+        await refreshList();//일정리스트 리렌더링
+      } catch (error){
+        console.log("ERROR:"+error.message);
+      }
 
-    console.log({"id" : id});
+    
   }
-  function update(s){
-    console.log(s);
-    axios.patch('https://babylion-api.yeongmin.kr/calendar/update',s);
+  const refreshList = async ()=>{
+    try{
+      const response = await axios.get('https://babylion-api.yeongmin.kr/calendar/events/all');//여기 await붙히니까 잘됨
+      setList(response.data);
+    } catch(error){
+      console.log(error.mesaage);
+    }
   }
 
   return (
@@ -67,7 +74,7 @@ export default function ScheduleList() {
 
       <View>
         <Top>
-          <h4>Schedule - {moment(value).format("YYYY년 MM월 DD일")}</h4><Plus onClick={() => { setisOpen(true); console.log(tmpList) }} strokeWidth='1.5' />
+          <h4>Schedule - {moment(value).format("YYYY년 MM월 DD일")}</h4><Plus onClick={() => { setcur(moment(value).format("YYYY-MM-DD")); setisOpen(true); }} strokeWidth='1.5' />
         </Top>
 
         <Box>
@@ -76,7 +83,7 @@ export default function ScheduleList() {
             ? List.find((obj) => obj.day === moment(value).format('YYYY-MM-DD'))
               .dayevent.map((s, index) => (
                 <Schedule>
-                  <div>{s.title}</div> <PAT onClick={()=>{setisPAT(true); setcur(s); }} ></PAT>  <Del onClick={()=>{deletes(s.id);}} ></Del>  <Time><div>{s.startTime}</div>{s.endTime}</Time>
+                  <Title>{s.title}</Title> <PAT onClick={()=>{setisPAT(true); setcur(s); }} ></PAT>  <Del onClick={()=>{deletes(s.id);}} ></Del>  <Time><div>{s.startTime}</div>{s.endTime}</Time>
                 </Schedule>
               ))
             : null}
@@ -85,7 +92,7 @@ export default function ScheduleList() {
       </View>
 
 
-      {isOpen ? <Modal setisOpen={setisOpen} List={List} setList={setList} /> : null}
+      {isOpen ? <Modal refreshList={refreshList} cur={cur} setisOpen={setisOpen} List={List} setList={setList} /> : null}
       {isPAT ? <Modify cur={cur} setisOpen={setisPAT} List={List} setList={setList} /> : null }
     </Container>
   )
@@ -140,6 +147,12 @@ padding: 18px 10px;
 const Box = styled.div`
   height: 36svh;
   overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  ::-webkit-scrollbar{
+    width: 10px;
+  }
 `
 
 const Schedule = styled.div`
@@ -147,14 +160,18 @@ const Schedule = styled.div`
   display: flex;
   justify-content: space-between;
   box-sizing: border-box;
-  border-top: 1px solid #E9E9E7;
-  /* border-radius: 10px; */
+  border: 1px solid #E9E9E7;
+  border-radius: 10px;
   padding: 12px;
+`
+const Title = styled.h4`
+
 `
 const Time = styled.div`
   font-size: small;
   display: flex;
   flex-direction: column;
+  color: grey;
 `
 const Del = styled.div`
   width: 20px;

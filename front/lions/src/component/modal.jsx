@@ -2,8 +2,15 @@ import { useState } from "react";
 import styled from "styled-components";
 import { X } from 'lucide-react'
 import moment from "moment";
+import axios from "axios";
 
 export default function Modal(props) {
+
+    const [name, setname] = useState('');
+    const [time1, setTime1] = useState('');
+    const [time2, setTime2] = useState('');
+    const handle1 = (event)=>{ setTime1(event.target.value); console.log(event.target.value); }
+    const handle2 = (event)=>{ setTime2(event.target.value); console.log(event.target.value); }
 
     function onChange(event) {
         // 매개변수 'event'는 이벤트가 발생한 태그의 정보를 가져온다.
@@ -11,17 +18,24 @@ export default function Modal(props) {
         console.log(event.target.value);
         // 값이 바뀔때마다 setname으로 name값을 변경해준다.
     }
-    function append() {
-        //서버에게 "날짜" , {일정 객체} 주면서 추가해달라고 요청
-        // props.setList(...props.List.schdules,
-        //     props.List.find((obj) => obj.day === moment(value).format('YYYY-MM-DD')).schdules);
-        props.setisOpen(false);
+    const append = async () => {
+        try{
+        const data = {
+            "title": name,
+            "date": props.cur,
+            "startTime": time1,
+            "endTime": time2
+            }
+        await axios.post('https://babylion-api.yeongmin.kr/calendar/adddirect',data);
+        props.refreshList();//일정리스트 리렌더링
+        } catch(error){
+
+        } finally{
+            props.setisOpen(false);
+        }
+        
     }
-    const [name, setname] = useState('');
-    const [time1, setTime1] = useState('');
-    const [time2, setTime2] = useState('');
-    const handle1 = (event)=>{ setTime1(event.target.value); console.log(event.target.value); }
-    const handle2 = (event)=>{ setTime2(event.target.value); console.log(event.target.value); }
+    
 
     return (
         <Container onClick={() => props.setisOpen(false)}>
@@ -32,7 +46,7 @@ export default function Modal(props) {
                 <input type="time" value={time1}  onChange={handle1} />
                 <input type="time" value={time2}  onChange={handle2} />
 
-                <div onClick={()=>{console.log(time1 , time2); } }><p>추가하기</p></div>
+                <Submit onClick={append}><p>추가하기</p></Submit>
                 {/* 위 온클릭 안에는 append가 들어가야함 */}
             </Contents>
         </Container>
@@ -84,7 +98,7 @@ const Submit = styled.button`
     border: none;
     background-color: #10B981;
     color: white;
-    border-radius: 19px;
+    border-radius: 10px;
     p{
         margin: 10px;
     }

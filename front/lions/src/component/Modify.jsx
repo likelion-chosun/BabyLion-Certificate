@@ -27,7 +27,7 @@ export default function Modify(props) {
         .then(()=>{})
         .catch(()=>{});
 
-        console.log(data);
+        props.refreshList();//일정리스트 리렌더링
         props.setisOpen(false);
     }
 

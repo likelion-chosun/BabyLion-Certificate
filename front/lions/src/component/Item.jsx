@@ -12,7 +12,7 @@ function Item({name,desc,c,Toggle,setToggle,i}){
         tmp[i] = !tmp[i];
         setToggle(tmp);
     
-        // console.log(props.Toggle); //디버깅용 출력
+        console.log(Toggle); //디버깅용 출력
     }
 
     return (
@@ -21,7 +21,7 @@ function Item({name,desc,c,Toggle,setToggle,i}){
                     <Name>{name}</Name>
                     <Desc>{desc}</Desc>
                 </div>
-                <Add onClick={toggle} >{isAdd?<Minus />:<Plus />}</Add>
+                <Add >{isAdd?<Minus />:<Plus />}</Add>
         </Box>
     )
 }
@@ -35,6 +35,7 @@ const Box = styled.div`
     padding: 20px;
     box-sizing: border-box;
     transition: 0.2s;
+    /* box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); */
 `
 
 const Name = styled.h4`
