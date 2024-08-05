@@ -22,17 +22,28 @@ function Recommend(props) {
         '#F8FFA4',
     ]
     function append(){
-        props.R.map((obj)=>{
+        props.R.map((obj,i)=>{
+            if(Toggle[i]){
             const data = {
-                "title": "집 앞 산책",
-                "date": "2024-08-04",
-                "startTime": "07:00",
-                "endTime": "08:00"
+                "title": obj.title,
+                "date": moment(new Date()).format("YYYY-MM-DD"),
+                "startTime": moment(new Date()).format("HH:mm"),
+                "endTime": moment(new Date()).format("HH:mm")
             }
             axios.post('https://babylion-api.yeongmin.kr/calendar/adddirect',data)
             .then(()=>{console.log("one!")})
             .catch(()=>{})
+            }
         });
+        // const data = {
+        //     "title": "테스트 일정",
+        //     "date": "2024-08-05",
+        //     "startTime": "07:00",
+        //     "endTime": "08:00"
+        // }
+        // axios.post('https://babylion-api.yeongmin.kr/calendar/adddirect',data)
+        // .then(()=>{console.log("append!")})
+        // .catch(()=>{})
     }
 
     return (
@@ -44,7 +55,7 @@ function Recommend(props) {
 
             </Schedule>
 
-            <Link onClick={() => { append(); console.log(Toggle); }} to='/Schedule'><Submit>일정 추가하기</Submit></Link>
+            <Link onClick={() => { append(); }} to='/Schedule'><Submit>일정 추가하기</Submit></Link>
             {/* 위 onClick은 선택된 일정을 추가하는 POST를 보내야함 */}
         </Container>
     )
