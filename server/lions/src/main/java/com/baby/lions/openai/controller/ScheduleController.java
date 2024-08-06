@@ -2,7 +2,7 @@ package com.baby.lions.openai.controller;
 
 
 import com.baby.lions.openai.entity.Schedule;
-import com.baby.lions.schedulemanage.service.ScheduleService;
+import com.baby.lions.schedulemanage.service.CalendarService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class ScheduleController {
 
-    private final ScheduleService scheduleService;
+    private final CalendarService scheduleService;
     // 로그인 구현되면 주석 풀 것
 //    @GetMapping("/recommend")
 //    public ResponseEntity<List<ScheduleResponse>> getRecommandSchedules() {

@@ -4,7 +4,6 @@ package com.baby.lions.openai.service;
 import com.baby.lions.openai.dto.ChatGPTRequest;
 import com.baby.lions.openai.dto.ChatGPTResponse;
 import com.baby.lions.openai.entity.Schedule;
-import com.baby.lions.schedulemanage.service.ScheduleService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
