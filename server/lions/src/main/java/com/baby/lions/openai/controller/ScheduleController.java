@@ -1,10 +1,8 @@
 package com.baby.lions.openai.controller;
 
 
-import com.baby.lions.login.util.SecurityUtils;
-import com.baby.lions.openai.dto.ScheduleResponse;
 import com.baby.lions.openai.entity.Schedule;
-import com.baby.lions.openai.service.ScheduleService;
+import com.baby.lions.schedulemanage.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

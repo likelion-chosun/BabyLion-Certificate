@@ -1,20 +1,14 @@
 package com.baby.lions.openai.controller;
 
-import com.baby.lions.openai.dto.ScheduleResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.baby.lions.openai.service.ChatGPTService;
-import com.baby.lions.openai.service.ScheduleService;
+import com.baby.lions.schedulemanage.service.ScheduleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
-
-import static com.baby.lions.login.util.SecurityUtils.getCurrentUserId;
 
 
 @Slf4j

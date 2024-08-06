@@ -1,89 +1,196 @@
-package com.baby.lions.openai.service;
+package com.baby.lions.schedulemanage.service;
 
-import com.baby.lions.login.entity.User;
-import com.baby.lions.login.repository.UserRepository;
-import com.baby.lions.openai.dto.ScheduleResponse;
+
+import com.baby.lions.login.util.SecurityUtils;
 import com.baby.lions.openai.entity.Schedule;
 import com.baby.lions.openai.repository.ScheduleRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import com.baby.lions.schedulemanage.dto.CalendarDayResponse;
+import com.baby.lions.schedulemanage.dto.CalendarRequest;
+import com.baby.lions.schedulemanage.dto.CalendarResponse;
+import com.baby.lions.schedulemanage.dto.EventRequest;
+import com.baby.lions.schedulemanage.entity.Calendar;
+import com.baby.lions.schedulemanage.repository.CalendarRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.*;
 import java.util.stream.Collectors;
 
-@Slf4j
-@AllArgsConstructor
 @Service
-public class ScheduleService {
+@RequiredArgsConstructor
+public class CalendarService {
+
     private final ScheduleRepository scheduleRepository;
-    private final ObjectMapper objectMapper;
-    private final UserRepository userRepository;
+    private final CalendarRepository calendarRepository;
 
-    public void resetSchedules(){
-        scheduleRepository.deleteAll();
-    }
-        // 로그인 구현되면 주석 풀 것
-//    public void saveSchedules(Long userId, List<Schedule> schedules) {
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자 ID: " + userId));
-//
-//        for (Schedule schedule : schedules) {
-//            schedule.setUser(user); // 각 일정에 사용자 설정
-//        }
-//        scheduleRepository.saveAll(schedules);
-//    }
-//
-//    public List<ScheduleResponse> getSchedules(Long userId) {
-//        try {
-//            List<Schedule> schedules = scheduleRepository.findByUserId(userId);
-//            return schedules.stream()
-//                    .map(schedule -> new ScheduleResponse(
-//                            schedule.getId(),
-//                            schedule.getTitle(),
-//                            schedule.getDescription()
-//                    ))
-//                    .collect(Collectors.toList());
-//        } catch (Exception e) {
-//            log.error("스케줄을 가져오는 중 오류가 발생: ", e);
-//            throw new RuntimeException("스케줄을 가져오는 중 오류가 발생했습니다.", e);
-//        }
-//    }
-
-    public List<Schedule> parseSchedules(String responseContent) throws JsonProcessingException {
-        try {
-            List<Map<String, String>> scheduleMaps = objectMapper.readValue(responseContent, List.class);
-            List<Schedule> schedules = new ArrayList<>();
-
-            for (Map<String, String> scheduleMap : scheduleMaps) {
-                String title = scheduleMap.get("title");
-                String description = scheduleMap.get("description");
-                schedules.add(new Schedule(title, description));
-            }
-            resetSchedules();
-            return schedules;
-        } catch (JsonProcessingException e) {
-            log.error("JSON 파싱 오류: ", e);
-            throw e;
-        }
+    private LocalDate convertToLocalDate(String dateStr) {
+        return LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
-    public void saveSchedules(String responseContent) throws JsonProcessingException {
-        List<Schedule> schedules = parseSchedules(responseContent);
-        scheduleRepository.saveAll(schedules);
+    private LocalTime convertToLocalTime(String timeStr) {
+        return LocalTime.parse(timeStr, DateTimeFormatter.ofPattern("HH:mm"));
+    }
+
+
+
+    // 일정 직접 받아서 추가하기
+    @Transactional
+    public CalendarResponse createEvent(CalendarRequest request) {
+        Long userId = SecurityUtils.getCurrentUserId();
+        LocalDate date = convertToLocalDate(request.getDate());
+        LocalTime startTime = convertToLocalTime(request.getStartTime());
+        LocalTime endTime = convertToLocalTime(request.getEndTime());
+
+        // CalendarEvent 엔티티 생성
+        Calendar event = new Calendar();
+        event.setTitle(request.getTitle());
+        event.setDate(date);
+        event.setStartTime(startTime);
+        event.setEndTime(endTime);
+        //event.setUser(userId);
+
+        // 엔티티를 데이터베이스에 저장
+        calendarRepository.save(event);
+
+        // 저장한 엔티티를 DTO로 변환하여 반환
+        return new CalendarResponse(event.getTitle(), event.getDate().toString(),
+                event.getStartTime().toString(), event.getEndTime().toString());
     }
 
     public List<Schedule> getSchedules() {
-        try {
-            return scheduleRepository.findAll();
-        } catch (Exception e) {
-            log.error("스케줄을 가져오는 중 오류가 발생: ", e);
-            throw new RuntimeException("스케줄을 가져오는 중 오류가 발생했습니다.", e);
+        return scheduleRepository.findAll();
+    }
+
+    @Transactional
+    public List<CalendarResponse> createEvents(CalendarRequest request) {
+        List<CalendarResponse> responseList = new ArrayList<>();
+        List<Schedule> schedules = getSchedules();
+
+        LocalDate date = convertToLocalDate(request.getEvents().get(0).getDate());
+
+        for (EventRequest eventRequest : request.getEvents()) {
+            Long scheduleId = eventRequest.getScheduleId();
+            LocalTime startTime = LocalTime.parse(eventRequest.getStartTime());
+
+            LocalTime endTime = eventRequest.getEndTime().isEmpty() ? null : LocalTime.parse(eventRequest.getEndTime());
+
+            String title = schedules.stream()
+                    .filter(schedule -> schedule.getId().equals(scheduleId))
+                    .map(Schedule::getTitle)
+                    .findFirst()
+                    .orElse("알 수 없는 일정");
+
+            Calendar event = new Calendar();
+            event.setTitle(title);
+            event.setDate(date);
+            event.setStartTime(startTime);
+            event.setEndTime(endTime);
+
+            calendarRepository.save(event);
+
+            CalendarResponse response = new CalendarResponse(
+                    event.getTitle(),
+                    event.getDate().toString(),
+                    event.getStartTime().toString(),
+                    event.getEndTime().toString()
+            );
+            responseList.add(response);
         }
+
+        return responseList;
+    }
+
+    @Transactional(readOnly = true)
+    public List<CalendarDayResponse> getAllEvents() {
+        Long userId = SecurityUtils.getCurrentUserId();
+        List<Calendar> events = calendarRepository.findAll();
+
+        // 날짜를 기준으로 정렬하여 그룹화
+        Map<LocalDate, List<Calendar>> eventsByDate = events.stream()
+                .sorted(Comparator.comparing(Calendar::getDate)) // 날짜 기준으로 정렬
+                .collect(Collectors.groupingBy(Calendar::getDate, LinkedHashMap::new, Collectors.toList()));
+
+        List<CalendarDayResponse> calendarDayResponses = new ArrayList<>();
+
+        for (Map.Entry<LocalDate, List<Calendar>> entry : eventsByDate.entrySet()) {
+            LocalDate date = entry.getKey();
+            List<Calendar> dayEvents = entry.getValue();
+
+            List<CalendarResponse> scheduleResponses = dayEvents.stream()
+                    .map(event -> new CalendarResponse(
+                            event.getId(),
+                            event.getTitle(),
+                            event.getDate().toString(),
+                            event.getStartTime().toString(),
+                            event.getEndTime().toString()))
+                    .collect(Collectors.toList());
+
+            String weekday = date.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
+            CalendarDayResponse dayResponse = new CalendarDayResponse(
+                    date.toString(), weekday, scheduleResponses);
+
+            calendarDayResponses.add(dayResponse);
+        }
+
+        return calendarDayResponses;
     }
 
 
+    @Transactional
+    public CalendarDayResponse getEventsByDate(String date) {
+
+        LocalDate localDate = LocalDate.parse(date);
+
+        List<Calendar> events = calendarRepository.findAll();
+        List<Calendar> filteredEvents = events.stream()
+                .filter(event -> event.getDate().isEqual(localDate))
+                .toList();
+
+        List<CalendarResponse> scheduleResponses = filteredEvents.stream()
+                .map(event -> new CalendarResponse(
+                        event.getTitle(),
+                        event.getDate().toString(),
+                        event.getStartTime().toString(),
+                        event.getEndTime().toString()))
+                .collect(Collectors.toList());
+
+        String weekday = localDate.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
+
+        return new CalendarDayResponse(date, weekday, scheduleResponses);
+    }
+
+    @Transactional
+    public CalendarResponse updateEvent(CalendarRequest updateRequest) {
+        Long eventId = updateRequest.getId();
+        Optional<Calendar> optionalEvent = calendarRepository.findById(eventId);
+
+        if (!optionalEvent.isPresent()) {
+            throw new RuntimeException("일정을 찾을 수 없습니다.");
+        }
+
+        Calendar event = optionalEvent.get();
+        event.setTitle(updateRequest.getTitle());
+        event.setDate(LocalDate.parse(updateRequest.getDate()));
+        event.setStartTime(LocalTime.parse(updateRequest.getStartTime()));
+        event.setEndTime(LocalTime.parse(updateRequest.getEndTime()));
+
+        Calendar updatedEvent = calendarRepository.save(event);
+
+        return new CalendarResponse(updatedEvent.getTitle(), updatedEvent.getDate().toString(), updatedEvent.getStartTime().toString(), updatedEvent.getEndTime().toString());
+    }
+
+    @Transactional
+    public void deleteEvent(CalendarRequest deleteRequest) {
+        Long eventId = deleteRequest.getId();
+
+        if (!calendarRepository.existsById(eventId)) {
+            throw new RuntimeException("일정을 찾을 수 없습니다.");
+        }
+        calendarRepository.deleteById(eventId);
+    }
 }
