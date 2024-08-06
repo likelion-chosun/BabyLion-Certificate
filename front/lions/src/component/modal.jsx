@@ -43,8 +43,8 @@ export default function Modal(props) {
 
                 <Top><h2>일정 추가</h2> <X onClick={() => props.setisOpen(false)} strokeWidth='1.6' /></Top>
                 <Input type='text' onChange={onChange} placeholder="제목" />
-                <input type="time" value={time1}  onChange={handle1} />
-                <input type="time" value={time2}  onChange={handle2} />
+                <Timeinput type="time" value={time1}  onChange={handle1} />
+                <Timeinput type="time" value={time2}  onChange={handle2} />
 
                 <Submit onClick={append}><p>추가하기</p></Submit>
                 {/* 위 온클릭 안에는 append가 들어가야함 */}
@@ -102,4 +102,10 @@ const Submit = styled.button`
     p{
         margin: 10px;
     }
+`
+
+const Timeinput = styled.input`
+    width: 80%;
+    height: 30px;
+    font-size: larger;
 `

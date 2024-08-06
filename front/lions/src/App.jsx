@@ -9,15 +9,13 @@ import Redirection from './page/Redirection';
 function App() {
 
   const [R,setR] = useState([]);
+  const [List,setList] = useState([]);
 
   return (
     <Routes>
-      <Route path='/login/oauth2/code/kakao' element={<Redirection />}  />
-      <Route path='/L' element={<Login />}  />
-
       <Route path='/' element={<InputPage R={R} setR={setR} />} />
       <Route path='/Recommend' element={<Recommend R={R} setR={setR} />} />
-      <Route path='/Schedule' element={<ScheduleList />}/>
+      <Route path='/Schedule' element={<ScheduleList List={List} setList={setList} />}/>
     </Routes>
   )
 }

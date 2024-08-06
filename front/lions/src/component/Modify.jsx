@@ -35,10 +35,10 @@ export default function Modify(props) {
 
                 <Top><h2>일정 수정</h2> <X onClick={() => props.setisOpen(false)} strokeWidth='1.6' /></Top>
                 <Input type='text' onChange={onChange} placeholder="제목" defaultValue={props.cur.title}/>
-                <input type="time" value={time1}  onChange={handle1} />
-                <input type="time" value={time2}    onChange={handle2} />
+                <Timeinput type="time" value={time1}  onChange={handle1} />
+                <Timeinput type="time" value={time2}    onChange={handle2} />
 
-                <Submit onClick={update}><p>추가하기</p></Submit>
+                <Submit onClick={update}><p>수정하기</p></Submit>
                 {/* 위 온클릭 안에는 update가 들어가야함 */}
             </Contents>
         </Container>
@@ -94,4 +94,10 @@ const Submit = styled.button`
     p{
         margin: 10px;
     }
+`
+
+const Timeinput = styled.input`
+    width: 80%;
+    height: 30px;
+    font-size: larger;
 `

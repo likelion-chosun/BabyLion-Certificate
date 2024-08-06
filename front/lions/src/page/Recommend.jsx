@@ -3,17 +3,13 @@ import { Plus, ChevronLeft } from 'lucide-react';
 import Item from '../component/Item.jsx';
 import { Routes, Link, Route } from 'react-router-dom';
 import axios from 'axios';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import moment from "moment";
 
 
 function Recommend(props) {
 
-    // const [data, setData] = useState(null);
-    // const [loading, setLoading] = useState(true);
-    // const [error, setError] = useState(null);
-
-    const recList = props.R;
+    const [recList,setrecList] = useState([]);//추천받은 일정 불러오기
     const [Toggle, setToggle] = useState(Array(4).fill(false));
     const C = [
         '#FFAAAA',
@@ -21,29 +17,40 @@ function Recommend(props) {
         '#C4EDFF',
         '#F8FFA4',
     ]
-    function append(){
-        props.R.map((obj,i)=>{
-            if(Toggle[i]){
-            const data = {
-                "title": obj.title,
-                "date": moment(new Date()).format("YYYY-MM-DD"),
-                "startTime": moment(new Date()).format("HH:mm"),
-                "endTime": moment(new Date()).format("HH:mm")
-            }
-            axios.post('https://babylion-api.yeongmin.kr/calendar/adddirect',data)
-            .then(()=>{console.log("one!")})
-            .catch(()=>{})
-            }
-        });
-        // const data = {
-        //     "title": "테스트 일정",
-        //     "date": "2024-08-05",
-        //     "startTime": "07:00",
-        //     "endTime": "08:00"
-        // }
-        // axios.post('https://babylion-api.yeongmin.kr/calendar/adddirect',data)
-        // .then(()=>{console.log("append!")})
-        // .catch(()=>{})
+
+    useEffect(()=>{
+        //일정 get요청
+        const getdata = async () => {
+            try{
+                const response = await axios.get('https://babylion-api.yeongmin.kr/schedule/recommend');
+                setrecList(response.data);
+            } catch (error) {}
+        }
+
+        getdata();
+    },[]);
+
+    const append = () => {
+        try{
+            recList.map((obj,i)=>{
+                if(Toggle[i]){
+                    const data = {
+                    "scheduleId" : obj.id,
+                    "title" : obj.title,
+                    "date": moment(new Date()).format("YYYY-MM-DD"),
+                    "startTime": moment(new Date()).format("HH:mm"),
+                    "endTime": moment(new Date()).format("HH:mm")
+                    }
+                    axios.post('https://babylion-api.yeongmin.kr/calendar/adddirect',data);
+                }
+            });
+        } catch(error){
+
+        } finally {
+            axios.get('https://babylion-api.yeongmin.kr/calendar/events/all')
+            .then((response)=>{ setList(response.data); })
+            .catch((error)=>{console.log(error.mesaage);});
+        }
     }
 
     return (
@@ -55,7 +62,12 @@ function Recommend(props) {
 
             </Schedule>
 
-            <Link onClick={() => { append(); }} to='/Schedule'><Submit>일정 추가하기</Submit></Link>
+            <Link onClick={(e)=>{
+                // e.preventDefault();
+                append().then(()=>{
+                    // window.location.href = '/Schedule'; // 성공적으로 수행 후 페이지 전환
+                })
+                }} to='/Schedule'><Submit>일정 추가하기</Submit></Link>
             {/* 위 onClick은 선택된 일정을 추가하는 POST를 보내야함 */}
         </Container>
     )
