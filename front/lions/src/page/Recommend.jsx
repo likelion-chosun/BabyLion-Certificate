@@ -58,7 +58,7 @@ function Recommend(props) {
             <Schedule>
                 <Link style={{ width: 'fit-content' }} to='/'><ChevronLeft /></Link>
 
-                {recList.map((O,i) => (<Item name={O.title} desc={O.description} c={C[i]} Toggle={Toggle} setToggle={setToggle} i={i} />))}
+                {recList==[]?"Loading...":recList.map((O,i) => (<Item name={O.title} desc={O.description} c={C[i]} Toggle={Toggle} setToggle={setToggle} i={i} />))}
 
             </Schedule>
 

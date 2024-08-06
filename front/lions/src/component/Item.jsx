@@ -28,7 +28,7 @@ function Item({name,desc,c,Toggle,setToggle,i}){
 
 const Box = styled.div`
     background-color: ${props => props.bg?'#ededed':props.col  };
-    height: 110px;
+    min-height: 110px;
     border-radius: 18px;
     display: flex;
     justify-content: space-between;
