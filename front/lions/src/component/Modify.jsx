@@ -21,7 +21,7 @@ export default function Modify(props) {
     const update = async () => {
         try{
         let data = props.cur;
-        data.title = name;
+        data.title = name?name:'내 일정',
         data.startTime = time1;
         data.endTime = time2;
         await axios.patch('https://babylion-api.yeongmin.kr/calendar/update',data);
@@ -38,7 +38,7 @@ export default function Modify(props) {
                 <input type="time" value={time1}  onChange={handle1} />
                 <input type="time" value={time2}    onChange={handle2} />
 
-                <div onClick={update}><p>추가하기</p></div>
+                <Submit onClick={update}><p>추가하기</p></Submit>
                 {/* 위 온클릭 안에는 update가 들어가야함 */}
             </Contents>
         </Container>
@@ -90,7 +90,7 @@ const Submit = styled.button`
     border: none;
     background-color: #10B981;
     color: white;
-    border-radius: 19px;
+    border-radius: 10px;
     p{
         margin: 10px;
     }
