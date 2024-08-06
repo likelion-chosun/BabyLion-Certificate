@@ -22,7 +22,11 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final ObjectMapper objectMapper;
     private final UserRepository userRepository;
-        // 로그인 구현되면 주석 풀 것
+
+    public void resetSchedules(){
+        scheduleRepository.deleteAll();
+    }
+    // 로그인 구현되면 주석 풀 것
 //    public void saveSchedules(Long userId, List<Schedule> schedules) {
 //        User user = userRepository.findById(userId)
 //                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자 ID: " + userId));
@@ -59,7 +63,7 @@ public class ScheduleService {
                 String description = scheduleMap.get("description");
                 schedules.add(new Schedule(title, description));
             }
-
+            resetSchedules();
             return schedules;
         } catch (JsonProcessingException e) {
             log.error("JSON 파싱 오류: ", e);
