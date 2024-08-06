@@ -1,8 +1,8 @@
 package com.baby.lions.openai.controller;
 
+import com.baby.lions.schedulemanage.service.CalendarService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.baby.lions.openai.service.ChatGPTService;
-import com.baby.lions.schedulemanage.service.ScheduleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class ChatGPTController {
 
 	private final ChatGPTService chatGPTService;
-	private final ScheduleService scheduleService;
+	private final CalendarService scheduleService;
 	// 로그인 구현 되면 주석 풀 것
 //	@PostMapping("/chat")
 //	public ResponseEntity<String> chat(@RequestBody @Valid String prompt) {
