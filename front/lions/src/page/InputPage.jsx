@@ -5,11 +5,10 @@ import { useState } from 'react';
 import axios from 'axios';
 
 function InputPage(props) {
-
-  const [Words, setWords] = useState(['비오는', '행복한', '우울한', '맑은', '쉬고싶은', '지루한', '에너지 넘치는', '슬픈', '😭']);
+  const [Words, setWords] = useState(['비오는', '행복한', '우울한', '맑은', '쉬고싶은', '지루한', '에너지 넘치는','신나는','슬픈',]);
   const [Toggle, setToggle] = useState(Array(9).fill(false));
   let res = {
-    "prompt":""
+    "prompt":","
   }
   function makeres(){
     for(let i=0; i<Toggle.length; i++ )
@@ -41,7 +40,7 @@ function InputPage(props) {
         <Title>어떤</Title>
         <Title>하루인가요?</Title>
         <TagBox>
-          {Words.map((word, index) => (<Tag key={index} i={index} Toggle={Toggle} setToggle={setToggle} >{word}</Tag>))}
+          {Words.map((word, index) => (<Tag key={index} i={index} Toggle={Toggle} setToggle={setToggle} >{word=='슬픈'?'😭':word}</Tag>))}
         </TagBox>
         <Input onChange={onChange} placeholder='직접 입력'></Input>
       </div>
