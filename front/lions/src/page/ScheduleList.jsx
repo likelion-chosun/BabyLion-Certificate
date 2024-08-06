@@ -51,6 +51,7 @@ export default function ScheduleList(props) {
     <Container>
       <Header>
         <Link style={{ width: 'fit-content' }} to='/'><ChevronLeft /></Link>
+        <Logo>TOPL</Logo>
       </Header>
       <Calendar
         onChange={onChange}
@@ -106,11 +107,17 @@ export default function ScheduleList(props) {
     </Container>
   )
 }
+const Logo = styled.h3`
+  margin-left: 130px;
+  font-size: 26px;
+`
 
 const Header = styled.div`
   width: 100%;
-  height: 26px;
+  /* height: 26px; */
   border-bottom: 1px solid #E9E9E7;
+  display: flex;
+  padding: 10px;
 `
 
 const Container = styled.div`
@@ -172,6 +179,7 @@ const Schedule = styled.div`
   border: 1px solid #E9E9E7;
   border-radius: 10px;
   padding: 12px;
+  align-items: center;
 `
 const Title = styled.h4`
 
@@ -195,4 +203,5 @@ const PAT = styled.div`
 const Boxright = styled.div`
   display: flex;
   gap: 10px;
+  align-items: center;
 `
