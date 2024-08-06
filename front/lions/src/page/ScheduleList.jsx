@@ -52,6 +52,7 @@ export default function ScheduleList(props) {
       <Header>
         <Link style={{ width: 'fit-content' }} to='/'><ChevronLeft /></Link>
         <Logo>TOPL</Logo>
+        <div></div>
       </Header>
       <Calendar
         onChange={onChange}
@@ -118,6 +119,8 @@ const Header = styled.div`
   border-bottom: 1px solid #E9E9E7;
   display: flex;
   padding: 10px;
+  box-sizing: border-box;
+  align-items: center;
 `
 
 const Container = styled.div`
